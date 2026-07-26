@@ -1,0 +1,18 @@
+[
+  {
+    "question": "How does B7-H3 relate to treatment response?",
+    "expected_terms": ["B7-H3", "response"],
+    "expected_source": "biomarkers.md"
+  },
+  {
+    "question": "What were the limitations of the cohort?",
+    "expected_terms": ["small", "randomized"],
+    "expected_source": "biomarkers.md"
+  },
+  {
+    "question": "What response rate is shown for high B7-H3?",
+    "expected_terms": ["61", "percent"],
+    "expected_source": "br01_figure_2.png"
+  }
+]
+

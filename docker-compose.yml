@@ -1,0 +1,26 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - BIORAG_DATA_DIR=/app/data
+      - BIORAG_INDEX_DIR=/app/data/index
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+  ui:
+    build: .
+    command: ["streamlit", "run", "app.py", "--server.address=0.0.0.0"]
+    ports:
+      - "8501:8501"
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      - BIORAG_API_URL=http://api:8000
