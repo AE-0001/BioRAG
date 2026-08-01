@@ -31,6 +31,7 @@ def ingest_pdf(path: Path) -> list[Document]:
         raise RuntimeError("PDF ingestion requires PyMuPDF: pip install pymupdf") from exc
 
     documents: list[Document] = []
+    artifact_dir = path.parent / ".biorag_artifacts" / stable_id(str(path.resolve()))
     with fitz.open(path) as pdf:
         title = pdf.metadata.get("title") or path.stem.replace("_", " ").title()
         for page_number, page in enumerate(pdf, start=1):
@@ -62,6 +63,10 @@ def ingest_pdf(path: Path) -> list[Document]:
                 if width < 150 or height < 100:
                     continue
                 caption = _nearest_figure_caption(page, figure_number)
+                extension = image_info.get("ext") or "png"
+                image_path = artifact_dir / f"page-{page_number}-figure-{figure_number}.{extension}"
+                artifact_dir.mkdir(parents=True, exist_ok=True)
+                image_path.write_bytes(image_info["image"])
                 documents.append(
                     Document(
                         id=stable_id(str(path.resolve()), str(page_number), str(xref)),
@@ -76,7 +81,8 @@ def ingest_pdf(path: Path) -> list[Document]:
                             "xref": xref,
                             "width": width,
                             "height": height,
-                            "image_extension": image_info.get("ext"),
+                            "image_extension": extension,
+                            "image_path": str(image_path),
                         },
                     )
                 )

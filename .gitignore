@@ -7,3 +7,7 @@ __pycache__/
 .ruff_cache/
 data/index/
 data/uploads/
+data/corpus/pdfs/
+evaluation/benchmark_index.json
+evaluation/faiss/
+evaluation/corpus_metrics.json

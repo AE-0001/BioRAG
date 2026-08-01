@@ -4,7 +4,6 @@ import os
 import shutil
 import uuid
 from pathlib import Path
-from typing import Annotated
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from pydantic import BaseModel, Field
@@ -13,7 +12,11 @@ from .service import BioRAGService
 
 DATA_DIR = Path(os.getenv("BIORAG_DATA_DIR", "data"))
 PRODUCTION = os.getenv("BIORAG_MODE", "production").lower() == "production"
-service = BioRAGService(DATA_DIR / "index" / "index.json", production=PRODUCTION)
+INDEX_PATH = Path(
+    os.getenv("BIORAG_INDEX_PATH", str(DATA_DIR / "index" / "index.json"))
+)
+UPLOAD_FILES = File(...)
+service = BioRAGService(INDEX_PATH, production=PRODUCTION)
 app = FastAPI(
     title="BioRAG API",
     version="0.1.0",
@@ -45,7 +48,7 @@ def metrics() -> dict[str, int | str]:
 
 
 @app.post("/documents/upload")
-def upload_documents(files: Annotated[list[UploadFile], File(...)]) -> dict:
+def upload_documents(files: list[UploadFile] = UPLOAD_FILES) -> dict:
     upload_dir = DATA_DIR / "uploads" / uuid.uuid4().hex
     upload_dir.mkdir(parents=True, exist_ok=True)
     saved: list[Path] = []
