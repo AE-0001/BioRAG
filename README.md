@@ -141,9 +141,7 @@ curl http://localhost:8000/metrics
 ```
 
 `/metrics` reports actual papers, figures, tables, supplementary rows, and
-chunks in the persisted index. Counts such as “500+ papers, 2,000+ figures,
-15,000+ chunks” should be claimed only after a corpus run produces those
-numbers. The repository ships a small synthetic demo, not copyrighted papers.
+chunks in the persisted index.
 
 Primary evaluation metrics are Recall@K, mean reciprocal rank, citation
 precision/coverage, unsupported-claim rate, multimodal retrieval accuracy,
