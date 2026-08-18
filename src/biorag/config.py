@@ -4,6 +4,12 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+# Makes the documented `copy .env.example .env` setup work for local runs,
+# while preserving environment variables supplied by Docker or CI.
+load_dotenv()
+
 
 @dataclass(frozen=True)
 class Settings:
@@ -11,7 +17,9 @@ class Settings:
     index_dir: Path = Path(os.getenv("BIORAG_INDEX_DIR", "data/index"))
     embedding_model: str = os.getenv("BIORAG_EMBEDDING_MODEL", "gemini-embedding-2")
     generation_model: str = os.getenv("BIORAG_GENERATION_MODEL", "gemini-3.5-flash")
-    extraction_engine: str = os.getenv("BIORAG_EXTRACTION_ENGINE", "docling")
+    # PyMuPDF is the portable default. Docling + PaddleOCR remains available
+    # through BIORAG_EXTRACTION_ENGINE=docling for machines with its model stack.
+    extraction_engine: str = os.getenv("BIORAG_EXTRACTION_ENGINE", "pymupdf")
     top_k: int = int(os.getenv("BIORAG_TOP_K", "5"))
     minimum_relevance: float = float(os.getenv("BIORAG_MIN_RELEVANCE", "0.20"))
 

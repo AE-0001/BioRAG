@@ -8,6 +8,11 @@ from .service import BioRAGService
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="BioRAG biomedical retrieval")
+    parser.add_argument(
+        "--production",
+        action="store_true",
+        help="Use Gemini embeddings/generation and FAISS instead of the deterministic offline mode.",
+    )
     subparsers = parser.add_subparsers(dest="command", required=True)
     ingest = subparsers.add_parser("ingest")
     ingest.add_argument("paths", nargs="+", type=Path)

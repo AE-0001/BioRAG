@@ -6,6 +6,7 @@ from .models import AgentTrace, Answer, SearchHit
 from .retrieval import HybridIndex, tokenize
 
 SENTENCES = re.compile(r"(?<=[.!?])\s+")
+MARKDOWN_HEADING = re.compile(r"(?m)^#{1,6}\s+.*(?:\n|$)")
 INTENT_TERMS = {
     "limitation": {"small", "randomized", "bias", "confound", "validation", "limitation"},
     "limitations": {"small", "randomized", "bias", "confound", "validation", "limitation"},
@@ -41,12 +42,22 @@ class SummaryAgent:
             query_terms.update(INTENT_TERMS.get(term, set()))
         candidates: list[tuple[int, int, str]] = []
         for number, hit in enumerate(hits[:3], start=1):
-            sentences = [part.strip() for part in SENTENCES.split(hit.document.text) if part.strip()]
+            clean_text = MARKDOWN_HEADING.sub("", hit.document.text)
+            sentences = [part.strip() for part in SENTENCES.split(clean_text) if part.strip()]
             for sentence in sentences:
                 overlap = len(query_terms.intersection(tokenize(sentence)))
                 if overlap:
                     candidates.append((overlap, number, sentence))
-        selected = sorted(candidates, key=lambda item: item[0], reverse=True)[:3]
+        selected: list[tuple[int, int, str]] = []
+        used_sources: set[int] = set()
+        for candidate in sorted(candidates, key=lambda item: item[0], reverse=True):
+            _, number, _ = candidate
+            if number in used_sources:
+                continue
+            selected.append(candidate)
+            used_sources.add(number)
+            if len(selected) == 3:
+                break
         if not selected:
             return "I could not find sufficient evidence in the indexed literature."
         return " ".join(f"{sentence} [{number}]" for _, number, sentence in selected)

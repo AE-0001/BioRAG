@@ -33,14 +33,27 @@ class GeminiEmbeddings:
         from google.genai import types
 
         values = list(texts)
-        response = self.client.models.embed_content(
-            model=self.model,
-            contents=values,
-            config=types.EmbedContentConfig(
+        if self.model == "gemini-embedding-2":
+            if task_type == "RETRIEVAL_QUERY":
+                values = [f"task: search result | query: {value}" for value in values]
+            else:
+                values = [f"title: none | text: {value}" for value in values]
+            # Embedding 2 aggregates a plain list into one vector. Explicit
+            # Content objects request one vector per independently indexed item.
+            contents = [
+                types.Content(parts=[types.Part.from_text(text=value)]) for value in values
+            ]
+            config = types.EmbedContentConfig(output_dimensionality=self.dimensions)
+        else:
+            contents = values
+            config = types.EmbedContentConfig(
                 task_type=task_type,
                 output_dimensionality=self.dimensions,
-                auto_truncate=True,
-            ),
+            )
+        response = self.client.models.embed_content(
+            model=self.model,
+            contents=contents,
+            config=config,
         )
         return [_normalize(list(item.values)) for item in response.embeddings]
 
@@ -55,9 +68,29 @@ class GeminiEmbeddings:
         from google.genai import types
 
         output: list[list[float]] = []
+        pending_text: list[str] = []
+
+        def flush_text_batch() -> None:
+            """Use a few batched API calls, not one request for every chunk."""
+            while pending_text:
+                batch = pending_text[:50]
+                del pending_text[:50]
+                output.extend(self._embed(batch, "RETRIEVAL_DOCUMENT"))
+
         for document in documents:
             image_path = document.metadata.get("image_path")
-            if document.modality == "figure" and image_path and Path(image_path).exists():
+            image_embeddings_enabled = os.getenv("BIORAG_IMAGE_EMBEDDINGS", "false").lower() in {
+                "1",
+                "true",
+                "yes",
+            }
+            if (
+                image_embeddings_enabled
+                and document.modality == "figure"
+                and image_path
+                and Path(image_path).exists()
+            ):
+                flush_text_batch()
                 mime_type = mimetypes.guess_type(image_path)[0] or "image/png"
                 contents = [
                     f"{document.title}\n{document.text}",
@@ -70,12 +103,8 @@ class GeminiEmbeddings:
                 )
                 output.append(_normalize(list(response.embeddings[0].values)))
             else:
-                output.extend(
-                    self._embed(
-                        [f"{document.title}\n{document.text}"],
-                        "RETRIEVAL_DOCUMENT",
-                    )
-                )
+                pending_text.append(f"{document.title}\n{document.text}")
+        flush_text_batch()
         return output
 
 

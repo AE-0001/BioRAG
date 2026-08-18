@@ -1,5 +1,5 @@
-from biorag.agents import BioRAGGraph
-from biorag.models import Document
+from biorag.agents import BioRAGGraph, SummaryAgent
+from biorag.models import Document, SearchHit
 from biorag.retrieval import HybridIndex
 
 
@@ -26,4 +26,35 @@ def test_graph_returns_cited_grounded_answer():
         "summary",
         "citation",
     ]
+
+
+def test_offline_summary_does_not_emit_markdown_headings():
+    hit = SearchHit(
+        Document(
+            "heading",
+            "Study",
+            "# Biomarker study\nB7-H3 was associated with response.",
+            "paper.md",
+        ),
+        score=0.9,
+        lexical_score=0.9,
+        semantic_score=0.0,
+    )
+
+    answer = SummaryAgent().run("What was associated with response?", [hit])
+
+    assert "#" not in answer
+    assert "B7-H3 was associated with response." in answer
+
+
+def test_offline_summary_uses_multiple_evidence_sources_when_available():
+    hits = [
+        SearchHit(Document("one", "One", "B7-H3 response was 61 percent.", "one.md"), 0.9, 0.9, 0),
+        SearchHit(Document("two", "Two", "B7-H3 response needs validation.", "two.md"), 0.8, 0.8, 0),
+    ]
+
+    answer = SummaryAgent().run("What was the B7-H3 response?", hits)
+
+    assert "[1]" in answer
+    assert "[2]" in answer
 
