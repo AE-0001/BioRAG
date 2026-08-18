@@ -114,6 +114,14 @@ Primary evaluation metrics are Recall@K, mean reciprocal rank, citation
 precision/coverage, unsupported-claim rate, multimodal retrieval accuracy,
 indexing throughput, and p50/p95 query latency.
 
+The automated QA suite currently exercises API contracts and invalid inputs,
+safe upload filenames, persistence and idempotency, BM25/FAISS ranking,
+reciprocal-rank fusion, PDF and dataset ingestion, multimodal agent routing,
+citation failure modes, CLI behavior, and end-to-end offline Q&A. CI enforces a
+79% whole-package line-coverage floor; external Docling model execution and live
+Gemini calls remain separately gated integration tests rather than mocked as
+production proof.
+
 ## Repository map
 
 ```text

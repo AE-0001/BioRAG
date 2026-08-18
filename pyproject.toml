@@ -31,7 +31,7 @@ dependencies = [
 
 [project.optional-dependencies]
 ui = ["streamlit>=1.36,<2", "requests>=2.32,<3", "plotly>=5.22,<7"]
-dev = ["pytest>=8.2,<10", "httpx>=0.27,<1", "ruff>=0.5,<1"]
+dev = ["pytest>=8.2,<10", "pytest-cov>=6,<8", "httpx>=0.27,<1", "ruff>=0.5,<1"]
 
 [project.scripts]
 biorag = "biorag.cli:main"
@@ -41,7 +41,7 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q"
+addopts = "-q --cov=biorag --cov-report=term-missing --cov-fail-under=79"
 
 [tool.ruff]
 line-length = 100
