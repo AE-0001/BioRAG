@@ -1,3 +1,6 @@
+from types import SimpleNamespace
+
+from biorag import service as service_module
 from biorag.service import BioRAGService
 
 
@@ -55,3 +58,32 @@ def test_search_obeys_requested_limit(tmp_path):
     service.ingest([first, second])
     assert len(service.search("shared", top_k=1)) == 1
 
+
+def test_production_local_hash_runs_without_external_api(tmp_path, demo_paper, monkeypatch):
+    settings = SimpleNamespace(
+        embedding_model="local-hash",
+        generation_model="unused",
+        data_dir=tmp_path,
+        extraction_engine="pymupdf",
+    )
+    monkeypatch.setattr(service_module, "Settings", lambda: settings)
+    service = BioRAGService(tmp_path / "index" / "index.json", production=True)
+    ingested = service.ingest([demo_paper])
+    answer = service.ask("What was associated with response?", top_k=2)
+    assert ingested["chunks"] > 0
+    assert answer.grounded is True
+    assert service.metrics()["backend"] == "faiss+bm25+local-hash"
+
+
+def test_production_local_hash_index_survives_restart(tmp_path, demo_paper, monkeypatch):
+    settings = SimpleNamespace(
+        embedding_model="local-hash",
+        generation_model="unused",
+        data_dir=tmp_path,
+        extraction_engine="pymupdf",
+    )
+    monkeypatch.setattr(service_module, "Settings", lambda: settings)
+    path = tmp_path / "index" / "index.json"
+    BioRAGService(path, production=True).ingest([demo_paper])
+    restored = BioRAGService(path, production=True)
+    assert restored.search("B7-H3", top_k=1)[0].document.source == "trial.md"
