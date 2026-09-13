@@ -2,7 +2,7 @@
   "schema_version": 1,
   "corpus_id": "biorag-cancer-immunotherapy-v1",
   "snapshot_date": "2026-09-13",
-  "generated_at": "2026-09-13T08:46:04.277811+00:00",
+  "generated_at": "2026-09-13T15:21:55.279495+00:00",
   "files": [
     {
       "pmcid": "PMC10296619",
@@ -107,6 +107,302 @@
       "sha256": "24a29d7f93671cc427dc2a79cf0f419630dd162f62fab482bbaf238eb8676c32",
       "license": "CC BY 4.0",
       "split": "test"
+    },
+    {
+      "pmcid": "PMC12191048",
+      "filename": "PMC12191048.1.pdf",
+      "bytes": 1630930,
+      "sha256": "1c409522902bc15cfe6245289f0ca80572ec370ce71b47537020ea7a1e59cbfe",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC9659902",
+      "filename": "PMC9659902.1.pdf",
+      "bytes": 2669693,
+      "sha256": "90bdbd4e6b2a573082dae70ee0e6dff2de201bb725fb74554ab59d210f2f02b6",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12428560",
+      "filename": "PMC12428560.1.pdf",
+      "bytes": 1145027,
+      "sha256": "0f63f06fbea13ca3dc1dc4066eccbb3effa29ebb80cd3c275e04c45d1f158734",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC13079705",
+      "filename": "PMC13079705.1.pdf",
+      "bytes": 1843051,
+      "sha256": "0719140f909058bcda144b62f3eee310b86cf868f28dcf95d19a8d3a13376a80",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12711667",
+      "filename": "PMC12711667.1.pdf",
+      "bytes": 3979873,
+      "sha256": "e4b1a26c6726b6c061db87361ed93dd4c13635cbe08b24a7f64979c13903675e",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12427656",
+      "filename": "PMC12427656.1.pdf",
+      "bytes": 2491318,
+      "sha256": "bcdd44fe30fa9e98847ed85615fc30414742a113edf82ae8d764bc817937c42a",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12374352",
+      "filename": "PMC12374352.1.pdf",
+      "bytes": 2206160,
+      "sha256": "974b0b073202c549bfadc4d06b2aed5d7f8db6141e56ede1eebfcadf1317e33b",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12561344",
+      "filename": "PMC12561344.1.pdf",
+      "bytes": 3342739,
+      "sha256": "4f153bd786b4f66575140d0f6c076d2a89f4b2fd4bc2a63d4239680cce708a9c",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12440771",
+      "filename": "PMC12440771.1.pdf",
+      "bytes": 2103526,
+      "sha256": "025fab017ca9023c7635703bdfc6d3fb696b8da949d1843a70a2a96c1193e2e5",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC9739567",
+      "filename": "PMC9739567.1.pdf",
+      "bytes": 1408002,
+      "sha256": "1772144178d7c7360abb3ca37fa3d2fa047cd97c000ff09444bf8a55be360ea1",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC11743624",
+      "filename": "PMC11743624.1.pdf",
+      "bytes": 6667868,
+      "sha256": "e76024c2c5c78042712559a1429874dff14ed1023becfbffe52c683568c26329",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC11017638",
+      "filename": "PMC11017638.1.pdf",
+      "bytes": 2958611,
+      "sha256": "a62d14df6613a125fba9106cf1f9a6ecf1f8e757d51e3932b55991844a28b49e",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC11442786",
+      "filename": "PMC11442786.1.pdf",
+      "bytes": 1932403,
+      "sha256": "8fdde07b0d88e1bb02f6ced6963b42c5ce6eff9fd19c05c1e5761141a304751f",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC13463188",
+      "filename": "PMC13463188.1.pdf",
+      "bytes": 1572106,
+      "sha256": "a1ef7a77660c3df4f75946330d01da6ee58e77e1c5de0affdf276da2b38f1d3d",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC10297050",
+      "filename": "PMC10297050.1.pdf",
+      "bytes": 1270635,
+      "sha256": "87141a1ca52d3f18ac07f911596892aa44832756a7f01b7633c6f71bfb1ac4e6",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12531160",
+      "filename": "PMC12531160.1.pdf",
+      "bytes": 3897132,
+      "sha256": "2e87cb0f50a2dad6a62a8bab28410a2c9eb485b6fa6c19285ac0155ab79af990",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC8829546",
+      "filename": "PMC8829546.1.pdf",
+      "bytes": 1134762,
+      "sha256": "f666608eef6145a95dd82c2db3fff6d1f0739927aaaf37b7692385ec609dc45c",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12389544",
+      "filename": "PMC12389544.1.pdf",
+      "bytes": 1129658,
+      "sha256": "d989b33ef3b5591d95c70090a69af03dab96147d1e472652924863fd54e74c0c",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12374963",
+      "filename": "PMC12374963.1.pdf",
+      "bytes": 2603644,
+      "sha256": "4f000a96d22342ff4a26ac36e970270661688a6f8e92b7e3e5ca0b98a22c3b28",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC5746415",
+      "filename": "PMC5746415.1.pdf",
+      "bytes": 3650877,
+      "sha256": "0f5144a2c41d1f4451f6eadb4d4575c26b695e6c4392cc248060aa266b302a83",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC11186190",
+      "filename": "PMC11186190.1.pdf",
+      "bytes": 4675181,
+      "sha256": "500c5d1f9aac66ce3d389ebcf929454d82d58d2fb7cf92f1ab82202db9c76e38",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12610549",
+      "filename": "PMC12610549.1.pdf",
+      "bytes": 1475659,
+      "sha256": "f1c8aabcc4cc77256473a79f521af219b971453399f5e141a0180652030807d4",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12992064",
+      "filename": "PMC12992064.1.pdf",
+      "bytes": 1768288,
+      "sha256": "a9f4bb686b1e6ab39e9c9c554fee0617cbc3d6c535922ebf19ab94789b2b50f5",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12855404",
+      "filename": "PMC12855404.1.pdf",
+      "bytes": 4339746,
+      "sha256": "3a14f446ab620e4bd1786f473729aae9ba6f302e953d00d0a623148ec6c26912",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12765318",
+      "filename": "PMC12765318.1.pdf",
+      "bytes": 11472930,
+      "sha256": "3cfc213e98edd7fb5425dfe6e320ed661d54f9356998add771669290a7b93ecb",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC13174196",
+      "filename": "PMC13174196.1.pdf",
+      "bytes": 19027321,
+      "sha256": "8cb3f2831c9f6ff9ba5ab8c3a273f39578600df6d4e6d29f68bdd006752e9c74",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC7352562",
+      "filename": "PMC7352562.1.pdf",
+      "bytes": 1963579,
+      "sha256": "9dffe88cf48c24fc34ac8d494b687ae4184a979f43639958eb1744040badccb5",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC12357114",
+      "filename": "PMC12357114.1.pdf",
+      "bytes": 6871543,
+      "sha256": "37ef6187ff4503d5306eda61299ab668134c8f29b3c56e671f3d7f785a8a4342",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC13447053",
+      "filename": "PMC13447053.1.pdf",
+      "bytes": 860249,
+      "sha256": "e96cfdaf0dda9c247fb17c7dbc55b0df8e6bd6ad6a17e7350256cdc1ce3883bf",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC11554695",
+      "filename": "PMC11554695.1.pdf",
+      "bytes": 866231,
+      "sha256": "8d9d3f63e4514942c7c73a865bef0fd9264ed187338c2599b488f0be3bd5ac4e",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC11305939",
+      "filename": "PMC11305939.1.pdf",
+      "bytes": 2021151,
+      "sha256": "9493424e46fdd58c5a1a0eb3f489ec8daa240428936950f657e03afaa800e403",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC9516314",
+      "filename": "PMC9516314.1.pdf",
+      "bytes": 7386043,
+      "sha256": "521f50b9b8d4fd93ebf7d21bd610dca7c69bf1541eb55f1ac320a1f802a1df05",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC11922736",
+      "filename": "PMC11922736.1.pdf",
+      "bytes": 4272223,
+      "sha256": "ed163a4dd4f222b450a16fd0587711ec7df96967f974d5291eb547c23ceac807",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC13451245",
+      "filename": "PMC13451245.1.pdf",
+      "bytes": 1476739,
+      "sha256": "a1b78fb8704441e9a51bf542fce28ae3c6c25669bdfdf91209fb499b086dff38",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC8582542",
+      "filename": "PMC8582542.1.pdf",
+      "bytes": 1081397,
+      "sha256": "02beeca1eb66604f88d33939bcf926f0e6c364490b3af3b1be870f917e75c821",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC9149956",
+      "filename": "PMC9149956.1.pdf",
+      "bytes": 548817,
+      "sha256": "243b1f70e3e40014f5fae5dfb5f3ba2eaac719ceb502fb5986b0db132b768087",
+      "license": "PMC Open Access",
+      "split": "expansion"
+    },
+    {
+      "pmcid": "PMC8573171",
+      "filename": "PMC8573171.1.pdf",
+      "bytes": 891812,
+      "sha256": "7fc560b62c7498404f56cd3d56c34f036c036dfd1c6805a6f99f7ab35d8c18e0",
+      "license": "PMC Open Access",
+      "split": "expansion"
     }
   ]
 }

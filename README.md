@@ -135,7 +135,8 @@ python scripts/lock_corpus.py
 python evaluation/run_retrieval_benchmark.py
 ```
 
-The versioned manifest contains 13 CC BY PMC papers. The retrieval benchmark parses
+The versioned manifest contains 50 open-access PMC papers (1,046 pages and 7,734
+page-preserving semantic chunks). The retrieval benchmark parses
 all papers quickly with PyMuPDF, gives Gemini and Ollama the exact same chunks, and
 writes a committed report under `evaluation/reports/`. Docling is evaluated on a
 representative layout-heavy subset because full layout, table, OCR, and figure

@@ -50,6 +50,9 @@ def article_pdf_url(pmcid: str) -> str | None:
 
 def download_paper(pmcid: str, output_dir: Path, version: int = 1) -> list[Path]:
     output_dir.mkdir(parents=True, exist_ok=True)
+    target = output_dir / f"{pmcid}.{version}.pdf"
+    if target.exists() and target.read_bytes()[:5] == b"%PDF-":
+        return [target]
     # The official post-August-2026 distribution path is the anonymous PMC
     # Cloud Service bucket. OAI-PMH remains the metadata/full-text XML source.
     pdf_url = CLOUD_PDF.format(pmcid=pmcid, version=version)
@@ -64,7 +67,6 @@ def download_paper(pmcid: str, output_dir: Path, version: int = 1) -> list[Path]
         payload = fetch(fallback)
     if not payload.startswith(b"%PDF"):
         raise RuntimeError(f"PMC PDF link returned a non-PDF response for {pmcid}")
-    target = output_dir / f"{pmcid}.{version}.pdf"
     target.write_bytes(payload)
     return [target]
 
