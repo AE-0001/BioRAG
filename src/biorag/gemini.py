@@ -27,6 +27,7 @@ class GeminiEmbeddings:
             raise RuntimeError("Set GEMINI_API_KEY before using Gemini embeddings")
         self.client = genai.Client(api_key=api_key)
         self.model = model or os.getenv("BIORAG_EMBEDDING_MODEL", "gemini-embedding-2")
+        self.name = f"gemini:{self.model}"
         self.dimensions = dimensions
 
     def _embed(self, texts: Iterable[str], task_type: str) -> list[list[float]]:
@@ -40,9 +41,7 @@ class GeminiEmbeddings:
                 values = [f"title: none | text: {value}" for value in values]
             # Embedding 2 aggregates a plain list into one vector. Explicit
             # Content objects request one vector per independently indexed item.
-            contents = [
-                types.Content(parts=[types.Part.from_text(text=value)]) for value in values
-            ]
+            contents = [types.Content(parts=[types.Part.from_text(text=value)]) for value in values]
             config = types.EmbedContentConfig(output_dimensionality=self.dimensions)
         else:
             contents = values
@@ -110,6 +109,8 @@ class GeminiEmbeddings:
 
 class GeminiGenerator:
     """Grounded answer synthesis with strict evidence-only prompting."""
+
+    supports_vision = True
 
     def __init__(self, model: str | None = None):
         from google import genai

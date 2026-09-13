@@ -10,26 +10,37 @@ LangGraph execution trace.
 
 ## Why this architecture
 
-Biomedical retrieval needs both semantic similarity and exact vocabulary.
-BioRAG therefore combines Gemini multimodal embeddings in FAISS with BM25
-lexical retrieval using reciprocal-rank fusion. Docling preserves document
-layout, PyMuPDF provides PDF primitives, and PP-OCRv5 is invoked selectively
-when layout parsing cannot recover usable text from a scanned page.
-The four agents have narrow responsibilities:
+Biomedical retrieval needs semantic similarity, exact vocabulary, and honest
+failure behavior. BioRAG supports either Gemini embeddings or fully local
+Ollama neural embeddings in FAISS, fused with BM25 using reciprocal-rank
+fusion. Docling is the primary layout-aware parser, MarkItDown is the fast
+document fallback, and PyMuPDF is the final portable PDF degradation path.
+Generation is independently selectable: local Qwen through Ollama or Gemini.
 
 ```mermaid
 flowchart LR
-    A[PDFs / Figures / Datasets] --> B[Docling + PyMuPDF + PaddleOCR]
+    A[PDFs / Office files / Figures / Datasets] --> B[Docling]
+    B -->|fallback| M[MarkItDown]
+    M -->|PDF fallback| P[PyMuPDF]
     B --> C[Semantic chunking + provenance]
-    C --> D[Gemini Embedding 2 + FAISS]
+    M --> C
+    P --> C
+    C --> D[Gemini or Ollama embeddings + FAISS]
     C --> E[BM25]
     D --> F[Reciprocal-rank fusion]
     E --> F
     F --> R[Retrieval Agent]
-    R --> V[Vision Agent]
-    V --> S[Research Summary Agent]
-    S --> G[Citation Agent]
-    G --> H[Answer + sources + trace]
+    R --> G{Evidence sufficient?}
+    G -->|no, retry available| Q[Query rewrite]
+    Q --> R
+    G -->|visual question| V[Vision Agent]
+    G -->|text question| S[Research Summary Agent]
+    V --> S
+    S --> X{Claim citations valid?}
+    X -->|retry| S
+    X -->|yes| H[Answer + sources + trace]
+    X -->|no| Z[Abstain]
+    G -->|no, retries exhausted| Z
 ```
 
 | Agent | Responsibility | Failure it controls |
@@ -49,18 +60,20 @@ or human review.
 - Figure and table extraction with paper/page provenance
 - CSV, TSV, JSON, and Excel supplementary dataset ingestion
 - Semantic chunking and idempotent indexing
-- Gemini Embedding 2 and persistent FAISS cosine search
+- Gemini or Ollama neural embeddings with persistent, provider-validated FAISS
 - BM25 + semantic reciprocal-rank fusion
-- Compiled four-agent LangGraph
-- Gemini evidence-constrained answer generation
+- Conditional LangGraph with evidence grading, query correction, visual routing,
+  citation retry, and abstention
+- Ollama/Qwen local generation or Gemini evidence-constrained generation
+- Prometheus counters, gauges, and latency histograms
 - FastAPI upload, ingestion, search, Q&A, health, and metrics APIs
 - Streamlit research interface
 - Docker packaging and automated evaluation
 
 ## Quick start
 
-Prerequisites: Python 3.11 and a Gemini API key. PyMuPDF is the portable
-default PDF extractor; Docling/PaddleOCR is an optional layout/OCR engine.
+Prerequisites: Python 3.11. For the fully local path, install Ollama; a Gemini
+API key is required only when a Gemini provider is selected.
 
 ```bash
 python -m venv .venv
@@ -70,7 +83,21 @@ python -m pip install -e ".[ui,dev]"
 copy .env.example .env
 ```
 
-Set `GEMINI_API_KEY` in your environment, then:
+For local neural retrieval and generation:
+
+```powershell
+ollama pull qwen2:0.5b-instruct
+ollama pull nomic-embed-text
+$env:BIORAG_MODE = "production"
+$env:BIORAG_EMBEDDING_PROVIDER = "ollama"
+$env:BIORAG_GENERATION_PROVIDER = "ollama"
+```
+
+Qwen2 0.5B is deliberately a low-resource baseline, not a biomedical authority.
+Configure a stronger local model for quality evaluation, or switch generation
+independently to Gemini.
+
+Then run:
 
 ```bash
 uvicorn biorag.api:app --reload
@@ -137,11 +164,12 @@ curl -X POST http://localhost:8000/ask \
 ```bash
 python evaluation/run_eval.py
 pytest
+curl http://localhost:8000/stats
 curl http://localhost:8000/metrics
 ```
 
-`/metrics` reports actual papers, figures, tables, supplementary rows, and
-chunks in the persisted index.
+`/stats` reports indexed corpus counts. `/metrics` exposes Prometheus-format
+operational metrics; Prometheus runs on port 9090 in the Compose stack.
 
 Primary evaluation metrics are Recall@K, mean reciprocal rank, citation
 precision/coverage, unsupported-claim rate, multimodal retrieval accuracy,
@@ -162,6 +190,9 @@ src/biorag/
   docling_ingestion.py  layout, OCR, tables, figures
   chunking.py           semantic evidence units
   gemini.py             embeddings and grounded generation
+  local_ai.py           Ollama embeddings and Qwen generation
+  markitdown_ingestion.py fast fallback document conversion
+  observability.py      Prometheus instrumentation
   faiss_store.py        persistent semantic index
   retrieval.py          BM25/offline test double
   hybrid.py             reciprocal-rank fusion
@@ -180,6 +211,8 @@ tests/                  unit and graph contract tests
 - Association is not presented as causation.
 - A valid citation marker proves formatting, not scientific truth; production
   review should additionally run claim-evidence entailment and human review.
+- Hunyuan is not included merely as a brand name. Add it behind the provider
+  interface only after selecting and evaluating an exact model and purpose.
 - `IndexFlatIP` is exact and appropriate at the resume’s stated scale. At much
   larger scale, benchmark IVF/HNSW or a managed vector service.
 

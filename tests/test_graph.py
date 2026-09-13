@@ -20,8 +20,7 @@ def test_compiled_graph_runs_four_agents():
     assert result["citations"] == ["Controlled study (paper.pdf, p. 7)"]
     assert [step["agent"] for step in result["trace"]] == [
         "retrieval",
-        "vision",
+        "evidence_grader",
         "research_summary",
         "citation",
     ]
-

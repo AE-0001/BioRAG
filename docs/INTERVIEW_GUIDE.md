@@ -82,4 +82,26 @@ Never say the bundled repository contains 500 papers. Say the pipeline was
 designed and benchmarked on that corpus only when `/metrics` and the benchmark
 artifact demonstrate it. Clearly distinguish the implementation, the demo
 corpus, and any previous private benchmark corpus.
+# Upgrade talking points
+
+The local path is not a hash-vector demo. Ollama serves a dedicated neural
+embedding model for FAISS and Qwen2 0.5B for generation. Qwen is deliberately a
+small baseline; embedding and generation providers are independent so Gemini or
+a stronger local model can be evaluated without rewriting retrieval.
+
+LangGraph is justified by control flow: evidence is graded, weak evidence
+triggers one bounded query rewrite, figure analysis is conditional, citation
+coverage gets one bounded regeneration attempt, and unresolved cases abstain.
+The graph is compiled once per service instead of once per question.
+
+Docling is primary for layout, tables, reading order and figures. MarkItDown is
+the fast fallback; PyMuPDF is the final PDF fallback. Parser provenance and
+fallback reasons remain attached to evidence.
+
+Prometheus is operational observability, not answer quality. Corpus statistics
+live on `/stats`; `/metrics` exposes scrape-compatible time-series metrics.
+
+Do not claim improved accuracy until the corpus evaluation and local-versus-
+Gemini ablation report has been run. Say “implemented and tested” for code paths
+and “to be evaluated” for model-quality comparisons.
 

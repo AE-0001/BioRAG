@@ -18,10 +18,22 @@ def test_health_contract(tmp_path, monkeypatch):
 
 
 def test_metrics_contract_has_stable_keys(tmp_path, monkeypatch):
-    payload = client_with_empty_service(tmp_path, monkeypatch).get("/metrics").json()
+    payload = client_with_empty_service(tmp_path, monkeypatch).get("/stats").json()
     assert set(payload) == {
-        "backend", "papers", "figures", "tables", "supplementary_rows", "chunks"
+        "backend",
+        "papers",
+        "figures",
+        "tables",
+        "supplementary_rows",
+        "chunks",
     }
+
+
+def test_prometheus_metrics_use_exposition_format(tmp_path, monkeypatch):
+    response = client_with_empty_service(tmp_path, monkeypatch).get("/metrics")
+    assert response.status_code == 200
+    assert "text/plain" in response.headers["content-type"]
+    assert "biorag_queries_total" in response.text
 
 
 def test_question_rejects_too_short_input(tmp_path, monkeypatch):

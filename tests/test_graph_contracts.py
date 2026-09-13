@@ -6,8 +6,9 @@ from biorag.models import Document, SearchHit
 
 def hit(identifier="1", modality="text", text="Supported finding.", image_path=None):
     metadata = {"image_path": str(image_path)} if image_path else {}
-    document = Document(identifier, "Study", text, "study.pdf", modality=modality, page=4,
-                        metadata=metadata)
+    document = Document(
+        identifier, "Study", text, "study.pdf", modality=modality, page=4, metadata=metadata
+    )
     return SearchHit(document, 0.9, 0.8, 0.9)
 
 
@@ -19,6 +20,15 @@ class StaticRetriever:
     def search(self, question, top_k=5):
         self.calls.append((question, top_k))
         return self.hits[:top_k]
+
+
+class ImprovingRetriever:
+    def __init__(self):
+        self.queries = []
+
+    def search(self, question, top_k=5):
+        self.queries.append(question)
+        return [] if len(self.queries) == 1 else [hit()]
 
 
 class FakeGenerator:
@@ -62,9 +72,9 @@ def test_missing_citation_fails_verification():
 
 def test_valid_multiple_citations_pass_verification():
     generator = FakeGenerator("First claim. [1] Second claim. [2]")
-    result = FourAgentResearchGraph(
-        StaticRetriever([hit("1"), hit("2")]), generator
-    ).invoke("Question")
+    result = FourAgentResearchGraph(StaticRetriever([hit("1"), hit("2")]), generator).invoke(
+        "Question"
+    )
     assert result["grounded"] is True
 
 
@@ -95,9 +105,20 @@ def test_missing_figure_file_is_not_sent_to_generator(tmp_path):
     assert generator.inspected == []
 
 
-def test_trace_has_exactly_four_ordered_agents():
+def test_trace_records_conditional_non_visual_route():
     result = FourAgentResearchGraph(StaticRetriever([hit()])).invoke("Question")
     assert [step["agent"] for step in result["trace"]] == [
-        "retrieval", "vision", "research_summary", "citation"
+        "retrieval",
+        "evidence_grader",
+        "research_summary",
+        "citation",
     ]
 
+
+def test_low_relevance_route_rewrites_and_retries_once():
+    retriever = ImprovingRetriever()
+    result = FourAgentResearchGraph(retriever).invoke("What is supported?")
+    assert result["grounded"] is True
+    assert result["retrieval_attempts"] == 2
+    assert "biomedical study evidence" in retriever.queries[1]
+    assert "query_rewriter" in [step["agent"] for step in result["trace"]]

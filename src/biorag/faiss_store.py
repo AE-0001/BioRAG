@@ -69,8 +69,32 @@ class FaissStore:
             json.dumps([document.to_dict() for document in self.documents], indent=2),
             encoding="utf-8",
         )
+        (directory / "manifest.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "embedding_provider": getattr(
+                        self.embeddings, "name", type(self.embeddings).__name__
+                    ),
+                    "dimensions": self.index.d,
+                    "vectors": self.index.ntotal,
+                },
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
 
     def load(self, directory: Path) -> None:
+        manifest_path = directory / "manifest.json"
+        if manifest_path.exists():
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            configured = getattr(self.embeddings, "name", type(self.embeddings).__name__)
+            if manifest.get("embedding_provider") != configured:
+                raise ValueError(
+                    "The saved FAISS index uses a different embedding provider; rebuild it."
+                )
         self.index = self.faiss.read_index(str(directory / "vectors.faiss"))
         payload = json.loads((directory / "documents.json").read_text(encoding="utf-8"))
         self.documents = [Document.from_dict(item) for item in payload]
+        if self.index.ntotal != len(self.documents):
+            raise ValueError("FAISS vector/document count mismatch; rebuild the index")

@@ -5,16 +5,15 @@ import shutil
 import uuid
 from pathlib import Path
 
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, Response, UploadFile
+from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 from pydantic import BaseModel, Field
 
 from .service import BioRAGService
 
 DATA_DIR = Path(os.getenv("BIORAG_DATA_DIR", "data"))
-PRODUCTION = os.getenv("BIORAG_MODE", "production").lower() == "production"
-INDEX_PATH = Path(
-    os.getenv("BIORAG_INDEX_PATH", str(DATA_DIR / "index" / "index.json"))
-)
+PRODUCTION = os.getenv("BIORAG_MODE", "offline").lower() == "production"
+INDEX_PATH = Path(os.getenv("BIORAG_INDEX_PATH", str(DATA_DIR / "index" / "index.json")))
 UPLOAD_FILES = File(...)
 service = BioRAGService(INDEX_PATH, production=PRODUCTION)
 app = FastAPI(
@@ -42,9 +41,14 @@ def health() -> dict[str, int | str]:
     }
 
 
-@app.get("/metrics")
-def metrics() -> dict[str, int | str]:
+@app.get("/stats")
+def stats() -> dict[str, int | str]:
     return service.metrics()
+
+
+@app.get("/metrics")
+def metrics() -> Response:
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 
 @app.post("/documents/upload")
@@ -52,7 +56,7 @@ def upload_documents(files: list[UploadFile] = UPLOAD_FILES) -> dict:
     upload_dir = DATA_DIR / "uploads" / uuid.uuid4().hex
     upload_dir.mkdir(parents=True, exist_ok=True)
     saved: list[Path] = []
-    allowed = {".pdf", ".txt", ".md", ".csv", ".tsv", ".xlsx", ".xls", ".json"}
+    allowed = {".pdf", ".docx", ".pptx", ".txt", ".md", ".csv", ".tsv", ".xlsx", ".xls", ".json"}
     for upload in files:
         filename = Path(upload.filename or "").name
         if Path(filename).suffix.lower() not in allowed:
