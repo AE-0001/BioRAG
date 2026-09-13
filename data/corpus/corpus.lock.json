@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "corpus_id": "biorag-cancer-immunotherapy-v1",
+  "snapshot_date": "2026-09-13",
+  "generated_at": "2026-09-13T08:46:04.277811+00:00",
+  "files": [
+    {
+      "pmcid": "PMC10296619",
+      "filename": "PMC10296619.1.pdf",
+      "bytes": 645807,
+      "sha256": "ca3deaec52071b28f0570988bcb5664a4f7ff7ba40454783999d8a0061ade52c",
+      "license": "CC BY 4.0",
+      "split": "development"
+    },
+    {
+      "pmcid": "PMC10327392",
+      "filename": "PMC10327392.1.pdf",
+      "bytes": 4169435,
+      "sha256": "7a80f90e709b98922f9c8f4ea67606b736d8d43d4f8b02c0ff12943cfd9006ee",
+      "license": "CC BY 4.0",
+      "split": "development"
+    },
+    {
+      "pmcid": "PMC11083689",
+      "filename": "PMC11083689.1.pdf",
+      "bytes": 2964976,
+      "sha256": "9b16cde74de9edaff5ba48660f0eb33e2711dd3f02e5c70358c46710a97867b1",
+      "license": "CC BY 4.0",
+      "split": "development"
+    },
+    {
+      "pmcid": "PMC10067596",
+      "filename": "PMC10067596.1.pdf",
+      "bytes": 5585828,
+      "sha256": "06e43004cfff7aac03ad4e2629492a0b2f32f2ee449bf361206e24062495e983",
+      "license": "CC BY 4.0",
+      "split": "development"
+    },
+    {
+      "pmcid": "PMC8438243",
+      "filename": "PMC8438243.1.pdf",
+      "bytes": 1777317,
+      "sha256": "a1f6af25127848b9ace008a7552092d018b5c57b957426493bdc38933c07bb37",
+      "license": "CC BY 4.0",
+      "split": "development"
+    },
+    {
+      "pmcid": "PMC6217729",
+      "filename": "PMC6217729.1.pdf",
+      "bytes": 1248082,
+      "sha256": "1b1f69f3b26ab65a95c82595fc62bb582a3550ee81bb17ae99d6d03592e2d8d8",
+      "license": "CC BY 4.0",
+      "split": "development"
+    },
+    {
+      "pmcid": "PMC8632651",
+      "filename": "PMC8632651.1.pdf",
+      "bytes": 6938309,
+      "sha256": "fade986eacbcb264ae13ed2aea56de13a6222d56b2f35cb8bdc9f5582cbeca6c",
+      "license": "CC BY 4.0",
+      "split": "development"
+    },
+    {
+      "pmcid": "PMC6133554",
+      "filename": "PMC6133554.1.pdf",
+      "bytes": 5204903,
+      "sha256": "aa56113e18288f1529b5246c60c0e47a68b23a31da38a0561d578c4e6a7936a6",
+      "license": "CC BY 4.0",
+      "split": "development"
+    },
+    {
+      "pmcid": "PMC8139127",
+      "filename": "PMC8139127.1.pdf",
+      "bytes": 785176,
+      "sha256": "5611be1e1abd7734123ba2ed65ddabd3578ae31349c7cf8bc4e30632a1a01990",
+      "license": "CC BY 4.0",
+      "split": "test"
+    },
+    {
+      "pmcid": "PMC10845339",
+      "filename": "PMC10845339.1.pdf",
+      "bytes": 3406774,
+      "sha256": "5f789f82e6f3c4ef00aa35abdbfd8039b55fd2999218991728af8bae73e94954",
+      "license": "CC BY 4.0",
+      "split": "test"
+    },
+    {
+      "pmcid": "PMC7425302",
+      "filename": "PMC7425302.1.pdf",
+      "bytes": 814414,
+      "sha256": "bd35d175df89fb43dfff8c39fe5b027bc0d1c300e33604fb0cf63ebf62047116",
+      "license": "CC BY 4.0",
+      "split": "test"
+    },
+    {
+      "pmcid": "PMC9489212",
+      "filename": "PMC9489212.1.pdf",
+      "bytes": 12486440,
+      "sha256": "025a657e5f2ea7aeb18ad4edd04229499e5323be89093ea877bce1982903fc51",
+      "license": "CC BY 4.0",
+      "split": "test"
+    },
+    {
+      "pmcid": "PMC9727400",
+      "filename": "PMC9727400.1.pdf",
+      "bytes": 2204359,
+      "sha256": "24a29d7f93671cc427dc2a79cf0f419630dd162f62fab482bbaf238eb8676c32",
+      "license": "CC BY 4.0",
+      "split": "test"
+    }
+  ]
+}

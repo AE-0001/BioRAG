@@ -86,16 +86,15 @@ copy .env.example .env
 For local neural retrieval and generation:
 
 ```powershell
-ollama pull qwen2:0.5b-instruct
+ollama pull qwen3:4b
 ollama pull nomic-embed-text
-$env:BIORAG_MODE = "production"
 $env:BIORAG_EMBEDDING_PROVIDER = "ollama"
 $env:BIORAG_GENERATION_PROVIDER = "ollama"
 ```
 
-Qwen2 0.5B is deliberately a low-resource baseline, not a biomedical authority.
-Configure a stronger local model for quality evaluation, or switch generation
-independently to Gemini.
+Qwen3 4B is the local cited-answer model. It is substantially stronger than the
+original 0.5B smoke-test model while remaining practical on a student laptop.
+Generation can still be switched independently to Gemini.
 
 Then run:
 
@@ -107,17 +106,13 @@ streamlit run app.py
 Open `http://localhost:8000/docs` for the API contract and
 `http://localhost:8501` for the interface.
 
-For a credential-free smoke test, set `BIORAG_MODE=offline`. This uses a
-deterministic local test double; it is not the production retrieval backend.
-
-### Offline end-to-end demo
+### End-to-end demo
 
 The bundled demonstration corpus contains text, a figure manifest, and
-supplementary tabular data. It lets you exercise ingestion, retrieval,
-grounded answering, citations, and the agent trace without an API key:
+supplementary tabular data. It lets you exercise ingestion, neural retrieval,
+grounded answering, citations, and the agent trace with the configured providers:
 
 ```powershell
-$env:BIORAG_MODE = "offline"
 biorag demo
 uvicorn biorag.api:app --reload
 streamlit run app.py
@@ -126,8 +121,8 @@ streamlit run app.py
 The demo is intentionally small and synthetic. It is for reproducibility and
 tests, not evidence of the scale claimed by a production corpus run.
 
-For an API-key-backed CLI run, use `biorag --production demo` after configuring
-`GEMINI_API_KEY`.
+To use Gemini, select the Gemini embedding and/or generation provider and configure
+`GEMINI_API_KEY`. There is no product-facing deterministic offline mode.
 
 ### Open-access corpus benchmark
 
@@ -135,15 +130,16 @@ The repository does not commit research PDFs. Download the listed open-access
 PMC packages locally, then run a benchmark to create a truthful metrics report:
 
 ```powershell
-python evaluation/run_corpus_benchmark.py --corpus data/corpus/pdfs
+python scripts/download_pmc_corpus.py
+python scripts/lock_corpus.py
+python evaluation/run_retrieval_benchmark.py
 ```
 
-Place PDFs you have downloaded legally into `data/corpus/pdfs/`; manual
-download is recommended because PMC can block automated PDF requests.
-
-Add `--production` to benchmark Gemini embeddings and the FAISS index. The
-generated metrics JSON is ignored by Git by default, so it never turns a local
-corpus run into an unsupported public scale claim.
+The versioned manifest contains 13 CC BY PMC papers. The retrieval benchmark parses
+all papers quickly with PyMuPDF, gives Gemini and Ollama the exact same chunks, and
+writes a committed report under `evaluation/reports/`. Docling is evaluated on a
+representative layout-heavy subset because full layout, table, OCR, and figure
+analysis is intentionally much more expensive than text extraction.
 
 ## API examples
 
@@ -178,7 +174,7 @@ indexing throughput, and p50/p95 query latency.
 The automated QA suite currently exercises API contracts and invalid inputs,
 safe upload filenames, persistence and idempotency, BM25/FAISS ranking,
 reciprocal-rank fusion, PDF and dataset ingestion, multimodal agent routing,
-citation failure modes, CLI behavior, and end-to-end offline Q&A. CI enforces a
+citation failure modes, CLI behavior, and deterministic component tests. CI enforces a
 79% whole-package line-coverage floor; external Docling model execution and live
 Gemini calls remain separately gated integration tests rather than mocked as
 production proof.
@@ -194,7 +190,7 @@ src/biorag/
   markitdown_ingestion.py fast fallback document conversion
   observability.py      Prometheus instrumentation
   faiss_store.py        persistent semantic index
-  retrieval.py          BM25/offline test double
+  retrieval.py          lexical BM25 retrieval
   hybrid.py             reciprocal-rank fusion
   graph.py              production four-agent LangGraph
   api.py                FastAPI services

@@ -21,7 +21,7 @@ class Settings:
         "BIORAG_GENERATION_PROVIDER",
         "gemini" if os.getenv("BIORAG_GENERATION_MODEL", "").startswith("gemini") else "ollama",
     )
-    generation_model: str = os.getenv("BIORAG_GENERATION_MODEL", "qwen2:0.5b-instruct")
+    generation_model: str = os.getenv("BIORAG_GENERATION_MODEL", "qwen3:4b")
     ollama_base_url: str = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
     ollama_embedding_model: str = os.getenv("BIORAG_OLLAMA_EMBEDDING_MODEL", "nomic-embed-text")
     request_timeout: float = float(os.getenv("BIORAG_REQUEST_TIMEOUT", "60"))

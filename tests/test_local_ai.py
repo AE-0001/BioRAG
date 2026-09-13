@@ -26,7 +26,7 @@ def test_ollama_qwen_generator_sends_grounded_non_streaming_chat():
         answer = OllamaGenerator().answer("What changed?", ["The value increased."])
     assert answer == "Supported result. [1]"
     payload = json.loads(request.call_args.args[0].data)
-    assert payload["model"] == "qwen2:0.5b-instruct"
+    assert payload["model"] == "qwen3:4b"
     assert payload["stream"] is False
     assert "[1] The value increased." in payload["messages"][0]["content"]
 

@@ -37,7 +37,7 @@ class OllamaGenerator:
 
     def __init__(
         self,
-        model: str = "qwen2:0.5b-instruct",
+        model: str = "qwen3:4b",
         base_url: str = "http://localhost:11434",
         timeout: float = 60,
     ):
@@ -68,7 +68,7 @@ class OllamaGenerator:
         )
 
     def inspect_figure(self, image_path, caption: str, question: str) -> str:
-        # Qwen2 0.5B is text-only. The graph retains captions and routes actual
+        # Qwen3 4B is text-only. The graph retains captions and routes actual
         # image inspection only to a provider that declares vision capability.
         return caption
 
@@ -81,16 +81,22 @@ class OllamaEmbeddings:
         model: str = "nomic-embed-text",
         base_url: str = "http://localhost:11434",
         timeout: float = 60,
+        batch_size: int = 32,
     ):
         self.model = model
         self.name = f"ollama:{model}"
         self.client = OllamaClient(base_url, timeout)
+        self.batch_size = batch_size
 
     def embed_documents(self, texts: list[str]) -> list[list[float]]:
         if not texts:
             return []
-        result = self.client.post("/api/embed", {"model": self.model, "input": texts})
-        return result["embeddings"]
+        embeddings: list[list[float]] = []
+        for offset in range(0, len(texts), self.batch_size):
+            batch = texts[offset : offset + self.batch_size]
+            result = self.client.post("/api/embed", {"model": self.model, "input": batch})
+            embeddings.extend(result["embeddings"])
+        return embeddings
 
     def embed_query(self, text: str) -> list[float]:
         return self.embed_documents([text])[0]

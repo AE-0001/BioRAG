@@ -10,7 +10,7 @@ def test_settings_has_safe_defaults():
     assert settings.top_k > 0
 
 
-def test_cli_exposes_production_switch(monkeypatch, capsys):
+def test_cli_has_no_offline_or_production_switch(monkeypatch, capsys):
     monkeypatch.setattr("sys.argv", ["biorag", "--help"])
 
     try:
@@ -18,4 +18,6 @@ def test_cli_exposes_production_switch(monkeypatch, capsys):
     except SystemExit as exc:
         assert exc.code == 0
 
-    assert "--production" in capsys.readouterr().out
+    output = capsys.readouterr().out
+    assert "--production" not in output
+    assert "offline" not in output.lower()

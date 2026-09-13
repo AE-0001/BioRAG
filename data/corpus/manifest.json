@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "corpus_id": "biorag-cancer-immunotherapy-v1",
+  "snapshot_date": "2026-09-13",
+  "topic": "Cancer immunotherapy, immune checkpoints, resistance, and CAR-T therapy",
+  "retrieval_source": "PMC OAI-PMH",
+  "papers": [
+    {"pmcid":"PMC10296619","title":"CAR T-Cell Therapy for Cancer: Latest Updates and Challenges","split":"development","license":"CC BY 4.0"},
+    {"pmcid":"PMC10327392","title":"Harnessing the potential of CAR-T cell therapy","split":"development","license":"CC BY 4.0"},
+    {"pmcid":"PMC11083689","title":"State of the Art in CAR-T Cell Therapy for Solid Tumors","split":"development","license":"CC BY 4.0"},
+    {"pmcid":"PMC10067596","title":"The current landscape of CAR T-cell therapy for solid tumors","split":"development","license":"CC BY 4.0"},
+    {"pmcid":"PMC8438243","title":"Soluble B7-CD28 Family Inhibitory Immune Checkpoint Proteins","split":"development","license":"CC BY 4.0"},
+    {"pmcid":"PMC6217729","title":"Engineering CAR-T Cells for Improved Function Against Solid Tumors","split":"development","license":"CC BY 4.0"},
+    {"pmcid":"PMC8632651","title":"Solid Tumor Microenvironment Can Harbor and Support Functional Properties of Memory T Cells","split":"development","license":"CC BY 4.0"},
+    {"pmcid":"PMC6133554","title":"Topography of cancer-associated immune cells in human solid tumors","split":"development","license":"CC BY 4.0"},
+    {"pmcid":"PMC8139127","title":"Clinical Insights Into Novel Immune Checkpoint Inhibitors","split":"test","license":"CC BY 4.0"},
+    {"pmcid":"PMC10845339","title":"An Fc-modified monoclonal antibody as novel treatment option for pancreatic cancer","split":"test","license":"CC BY 4.0"},
+    {"pmcid":"PMC7425302","title":"Mechanisms of Cancer Resistance to Immunotherapy","split":"test","license":"CC BY 4.0"},
+    {"pmcid":"PMC9489212","title":"Transient cell-in-cell formation underlies tumor relapse and resistance to immunotherapy","split":"test","license":"CC BY 4.0"},
+    {"pmcid":"PMC9727400","title":"Advances in CAR T cell immunotherapy for paediatric brain tumours","split":"test","license":"CC BY 4.0"}
+  ]
+}

@@ -1,0 +1,26 @@
+{"id":"r001","question":"Why is low-level epithelial tumor-associated antigen expression a safety problem for CAR T-cell therapy in common solid cancers?","gold_pmcids":["PMC10296619"],"type":"mechanism"}
+{"id":"r002","question":"How do CAR T cells combine antibody antigen specificity with T-lymphocyte cytotoxicity?","gold_pmcids":["PMC10296619"],"type":"mechanism"}
+{"id":"r003","question":"Which FDA-approved blood cancers and antigens are targeted by established CAR-T therapies?","gold_pmcids":["PMC10327392"],"type":"factoid"}
+{"id":"r004","question":"Can bispecific CARs completely prevent tumor antigen escape when some tumor cells express neither target?","gold_pmcids":["PMC10327392"],"type":"reasoning"}
+{"id":"r005","question":"Which strategies involving TRUCKs, bispecific CARs, checkpoint inhibitors and oncolytic viruses are being developed for solid tumors?","gold_pmcids":["PMC11083689"],"type":"list"}
+{"id":"r006","question":"Why has no CAR-T therapy yet been approved for solid tumors despite success in hematological malignancies?","gold_pmcids":["PMC11083689"],"type":"mechanism"}
+{"id":"r007","question":"What mechanisms, research progress, challenges and counterstrategies define the current landscape of CAR T-cell therapy for solid tumors?","gold_pmcids":["PMC10067596"],"type":"synthesis"}
+{"id":"r008","question":"What barriers prevent successful CAR T-cell treatment of solid tumors and what counterstrategies address them?","gold_pmcids":["PMC10067596"],"type":"synthesis"}
+{"id":"r009","question":"How do soluble B7-CD28 family inhibitory checkpoint proteins contribute to tumor immune evasion?","gold_pmcids":["PMC8438243"],"type":"mechanism"}
+{"id":"r010","question":"Which emerging inhibitory checkpoints include B7-H3, B7-H4 and BTLA?","gold_pmcids":["PMC8438243"],"type":"factoid"}
+{"id":"r011","question":"How can CAR-T cells be engineered for improved function against solid tumors?","gold_pmcids":["PMC6217729"],"type":"engineering"}
+{"id":"r012","question":"Which genetic engineering approaches enhance CAR T-cell persistence and activity in solid tumors?","gold_pmcids":["PMC6217729"],"type":"engineering"}
+{"id":"r013","question":"Can the solid tumor microenvironment harbor and support functional properties of memory T cells?","gold_pmcids":["PMC8632651"],"type":"mechanism"}
+{"id":"r014","question":"Which suppressive cells, metabolites and hypoxic conditions impede memory T-cell function in solid tumors?","gold_pmcids":["PMC8632651"],"type":"mechanism"}
+{"id":"r015","question":"How were hot, cold and immune-excluded spatial infiltration patterns measured across human solid tumors?","gold_pmcids":["PMC6133554"],"type":"methods"}
+{"id":"r016","question":"How many tissue slides and patients were analyzed in the pan-cancer immune-cell topography cohort?","gold_pmcids":["PMC6133554"],"type":"numeric"}
+{"id":"r017","question":"What clinical evidence exists for novel immune checkpoint inhibitors beyond CTLA-4, PD-1 and PD-L1?","gold_pmcids":["PMC8139127"],"type":"clinical"}
+{"id":"r018","question":"Which de novo and acquired resistance mechanisms and immune-related adverse events limit checkpoint inhibitors?","gold_pmcids":["PMC8139127"],"type":"clinical"}
+{"id":"r019","question":"How does an Fc-modified monoclonal antibody stimulate antibody-dependent cellular cytotoxicity in pancreatic cancer?","gold_pmcids":["PMC10845339"],"type":"mechanism"}
+{"id":"r020","question":"What novel Fc-engineered antibody treatment option is investigated for pancreatic cancer?","gold_pmcids":["PMC10845339"],"type":"clinical"}
+{"id":"r021","question":"What intrinsic and extrinsic mechanisms cause cancer resistance to immunotherapy?","gold_pmcids":["PMC7425302"],"type":"synthesis"}
+{"id":"r022","question":"How do tumor cells, immune cells and the tumor microenvironment interact to produce immunotherapy resistance?","gold_pmcids":["PMC7425302"],"type":"mechanism"}
+{"id":"r023","question":"How does transient cell-in-cell formation allow tumors to relapse after immunotherapy?","gold_pmcids":["PMC9489212"],"type":"mechanism"}
+{"id":"r024","question":"What happens to inner tumor cells after reactive T cells kill the outer cells of cell-in-cell structures?","gold_pmcids":["PMC9489212"],"type":"mechanism"}
+{"id":"r025","question":"What advances have been made in CAR T-cell immunotherapy for paediatric brain tumours?","gold_pmcids":["PMC9727400"],"type":"clinical"}
+{"id":"r026","question":"Which biological barriers and target-selection problems affect CAR T treatment of childhood brain tumors?","gold_pmcids":["PMC9727400"],"type":"clinical"}

@@ -14,7 +14,7 @@ services:
     command:
       - >-
         until curl -s http://ollama:11434/api/tags >/dev/null; do sleep 2; done;
-        curl -s http://ollama:11434/api/pull -d '{"name":"qwen2:0.5b-instruct","stream":false}';
+        curl -s http://ollama:11434/api/pull -d '{"name":"qwen3:4b","stream":false}';
         curl -s http://ollama:11434/api/pull -d '{"name":"nomic-embed-text","stream":false}'
 
   api:
@@ -30,7 +30,7 @@ services:
       - BIORAG_EMBEDDING_PROVIDER=${BIORAG_EMBEDDING_PROVIDER:-ollama}
       - BIORAG_OLLAMA_EMBEDDING_MODEL=${BIORAG_OLLAMA_EMBEDDING_MODEL:-nomic-embed-text}
       - BIORAG_GENERATION_PROVIDER=${BIORAG_GENERATION_PROVIDER:-ollama}
-      - BIORAG_GENERATION_MODEL=${BIORAG_GENERATION_MODEL:-qwen2:0.5b-instruct}
+      - BIORAG_GENERATION_MODEL=${BIORAG_GENERATION_MODEL:-qwen3:4b}
       - OLLAMA_BASE_URL=http://ollama:11434
       - BIORAG_EXTRACTION_ENGINES=docling,markitdown,pymupdf
       - GEMINI_API_KEY=${GEMINI_API_KEY}

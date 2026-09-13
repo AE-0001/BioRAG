@@ -5,14 +5,16 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import tarfile
-import tempfile
 import urllib.request
 import xml.etree.ElementTree as etree
 from pathlib import Path
 from urllib.parse import urljoin
 
-OA_LOOKUP = "https://www.ncbi.nlm.nih.gov/pmc/utils/oa/oa.fcgi?id={pmcid}"
+OAI_RECORD = (
+    "https://pmc.ncbi.nlm.nih.gov/api/oai/v1/mh/"
+    "?verb=GetRecord&identifier=oai:pubmedcentral.nih.gov:{numeric_id}&metadataPrefix=pmc"
+)
+CLOUD_PDF = "https://pmc-oa-opendata.s3.amazonaws.com/{pmcid}.{version}/{pmcid}.{version}.pdf"
 PMC_ARTICLE = "https://pmc.ncbi.nlm.nih.gov/articles/{pmcid}/"
 USER_AGENT = "BioRAG research prototype (open-access corpus downloader)"
 PDF_LINK = re.compile(r"href=[\"']([^\"']+\.pdf(?:\?[^\"']*)?)[\"']", re.IGNORECASE)
@@ -27,51 +29,42 @@ def fetch(url: str) -> bytes:
         return response.read()
 
 
-def package_url(pmcid: str) -> str | None:
-    root = etree.fromstring(fetch(OA_LOOKUP.format(pmcid=pmcid)))
-    link = root.find(".//link[@format='tgz']")
-    return link.get("href") if link is not None else None
-
-
 def article_pdf_url(pmcid: str) -> str | None:
-    """Find PMC's real, filename-bearing PDF URL (the generic /pdf/ URL is HTML)."""
+    """Resolve the article PDF from PMC's current OAI-PMH JATS metadata."""
+    numeric_id = pmcid.upper().removeprefix("PMC")
+    root = etree.fromstring(fetch(OAI_RECORD.format(numeric_id=numeric_id)))
     article_url = PMC_ARTICLE.format(pmcid=pmcid)
+    xlink_href = "{http://www.w3.org/1999/xlink}href"
+    for element in root.iter():
+        if not element.tag.endswith("self-uri"):
+            continue
+        content_type = (element.get("content-type") or "").lower()
+        href = element.get(xlink_href) or element.get("href")
+        if href and ("pdf" in content_type or href.lower().endswith(".pdf")):
+            return href if href.startswith("http") else urljoin(article_url + "pdf/", href)
+    # Defensive fallback for records whose JATS omits a self-uri.
     html = fetch(article_url).decode("utf-8", errors="replace")
     candidates = [urljoin(article_url, match) for match in PDF_LINK.findall(html)]
     return next((url for url in candidates if "/pdf/" in url), None)
 
 
-def download_paper(pmcid: str, output_dir: Path) -> list[Path]:
+def download_paper(pmcid: str, output_dir: Path, version: int = 1) -> list[Path]:
     output_dir.mkdir(parents=True, exist_ok=True)
-    archive = package_url(pmcid)
-    if archive:
-        with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as temporary:
-            archive_path = Path(temporary.name)
-        try:
-            archive_path.write_bytes(fetch(archive))
-            with tarfile.open(archive_path, "r:gz") as bundle:
-                members = [member for member in bundle.getmembers() if member.name.lower().endswith(".pdf")]
-                files: list[Path] = []
-                for member in members:
-                    source = bundle.extractfile(member)
-                    if source is None:
-                        continue
-                    target = output_dir / f"{pmcid}_{Path(member.name).name}"
-                    target.write_bytes(source.read())
-                    files.append(target)
-                if files:
-                    return files
-        except (OSError, tarfile.TarError):
-            pass
-        finally:
-            archive_path.unlink(missing_ok=True)
-    pdf_url = article_pdf_url(pmcid)
-    if not pdf_url:
-        raise RuntimeError(f"PMC did not expose a PDF link for {pmcid}")
-    payload = fetch(pdf_url)
+    # The official post-August-2026 distribution path is the anonymous PMC
+    # Cloud Service bucket. OAI-PMH remains the metadata/full-text XML source.
+    pdf_url = CLOUD_PDF.format(pmcid=pmcid, version=version)
+    try:
+        payload = fetch(pdf_url)
+    except OSError:
+        # A small number of records have a later article version. Resolve the
+        # browser-facing filename only as a compatibility fallback.
+        fallback = article_pdf_url(pmcid)
+        if not fallback:
+            raise RuntimeError(f"PMC did not expose a PDF for {pmcid}")
+        payload = fetch(fallback)
     if not payload.startswith(b"%PDF"):
         raise RuntimeError(f"PMC PDF link returned a non-PDF response for {pmcid}")
-    target = output_dir / f"{pmcid}.pdf"
+    target = output_dir / f"{pmcid}.{version}.pdf"
     target.write_bytes(payload)
     return [target]
 
@@ -87,8 +80,8 @@ def main() -> None:
     for paper in manifest["papers"]:
         pmcid = paper["pmcid"]
         try:
-            files = download_paper(pmcid, args.output)
-        except (OSError, RuntimeError, tarfile.TarError) as exc:
+            files = download_paper(pmcid, args.output, int(paper.get("version", 1)))
+        except (OSError, RuntimeError, etree.ParseError) as exc:
             failed.append(pmcid)
             print(f"{pmcid}: skipped ({exc})")
             continue

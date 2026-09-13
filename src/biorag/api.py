@@ -12,10 +12,9 @@ from pydantic import BaseModel, Field
 from .service import BioRAGService
 
 DATA_DIR = Path(os.getenv("BIORAG_DATA_DIR", "data"))
-PRODUCTION = os.getenv("BIORAG_MODE", "offline").lower() == "production"
 INDEX_PATH = Path(os.getenv("BIORAG_INDEX_PATH", str(DATA_DIR / "index" / "index.json")))
 UPLOAD_FILES = File(...)
-service = BioRAGService(INDEX_PATH, production=PRODUCTION)
+service = BioRAGService(INDEX_PATH, production=True)
 app = FastAPI(
     title="BioRAG API",
     version="0.1.0",
@@ -36,7 +35,8 @@ class QuestionRequest(BaseModel):
 def health() -> dict[str, int | str]:
     return {
         "status": "ok",
-        "mode": "production" if service.production else "offline",
+        "embedding_provider": service.settings.embedding_provider,
+        "generation_provider": service.settings.generation_provider,
         "indexed_chunks": len(service.index.documents),
     }
 

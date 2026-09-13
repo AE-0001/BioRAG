@@ -14,7 +14,11 @@ def client_with_empty_service(tmp_path, monkeypatch):
 def test_health_contract(tmp_path, monkeypatch):
     response = client_with_empty_service(tmp_path, monkeypatch).get("/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok", "mode": "offline", "indexed_chunks": 0}
+    payload = response.json()
+    assert payload["status"] == "ok"
+    assert payload["embedding_provider"] in {"ollama", "gemini"}
+    assert payload["generation_provider"] in {"ollama", "gemini"}
+    assert payload["indexed_chunks"] == 0
 
 
 def test_metrics_contract_has_stable_keys(tmp_path, monkeypatch):

@@ -5,9 +5,12 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 .ruff_cache/
+.coverage
 data/index/
 data/uploads/
+data/artifacts/
 data/corpus/pdfs/
 evaluation/benchmark_index.json
 evaluation/faiss/
 evaluation/corpus_metrics.json
+evaluation/results/

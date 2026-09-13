@@ -56,6 +56,6 @@ def test_demo_ingests_all_three_modal_sources(monkeypatch, capsys):
     assert "Agent trace" in output
 
 
-def test_cli_uses_offline_mode_by_default(monkeypatch, capsys):
+def test_cli_uses_neural_pipeline_by_default(monkeypatch, capsys):
     service, _ = run_cli(monkeypatch, capsys, "ask", "Question")
-    assert service.production is False
+    assert service.production is True

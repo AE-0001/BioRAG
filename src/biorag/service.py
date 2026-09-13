@@ -47,8 +47,13 @@ def graph_state_to_answer(question: str, state: dict) -> Answer:
 
 
 class BioRAGService:
-    def __init__(self, index_path: Path, production: bool = False):
-        self.settings = Settings()
+    def __init__(
+        self,
+        index_path: Path,
+        production: bool = False,
+        settings: Settings | None = None,
+    ):
+        self.settings = settings or Settings()
         self.production = production
         self.index_path = index_path
         self.index = HybridIndex.load(index_path) if index_path.exists() else HybridIndex()
