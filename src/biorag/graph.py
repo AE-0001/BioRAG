@@ -188,10 +188,16 @@ class FourAgentResearchGraph:
     def _citation_agent(self, state: ResearchState) -> ResearchState:
         referenced = {int(value) for value in re.findall(r"\[(\d+)\]", state["answer"])}
         indices_valid = bool(referenced) and all(1 <= n <= len(state["hits"]) for n in referenced)
+        # Models place citations either before punctuation ("claim [1].") or
+        # immediately after it ("claim. [1]"). Treat both as the same claim
+        # without accepting a single citation as coverage for an entire answer.
         factual = [
-            s.strip()
-            for s in re.split(r"(?<=\])\s+", state["answer"])
-            if s.strip() and "insufficient" not in s.lower()
+            claim.strip()
+            for claim in re.findall(
+                r"[^.!?\n]+(?:[.!?]+|$)(?:\s*\[\d+\])?",
+                state["answer"],
+            )
+            if claim.strip() and "insufficient" not in claim.lower()
         ]
         claims_cited = bool(factual) and all(
             re.search(r"\[\d+\]", sentence) for sentence in factual

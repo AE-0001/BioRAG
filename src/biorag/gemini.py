@@ -6,7 +6,11 @@ import os
 from collections.abc import Iterable
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 from .models import Document
+
+load_dotenv()
 
 
 def _normalize(values: list[float]) -> list[float]:
