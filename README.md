@@ -1,5 +1,7 @@
 # BioRAG
 
+[![CI](https://github.com/AE-0001/BioRAG/actions/workflows/ci.yml/badge.svg)](https://github.com/AE-0001/BioRAG/actions/workflows/ci.yml)
+
 Multimodal, multi-agent retrieval-augmented generation for biomedical research
 literature. BioRAG ingests papers, figures, tables, and supplementary datasets,
 then produces evidence-bound answers with page-level citations and an auditable
@@ -7,6 +9,23 @@ LangGraph execution trace.
 
 > Research prototype only. BioRAG does not provide medical advice, diagnosis,
 > or treatment recommendations.
+
+## Verified evaluation snapshot
+
+| Benchmark | Result |
+|---|---:|
+| Labelled known-item queries | 30 |
+| Evaluation corpus | 13 PDFs / 245 pages / 329 chunks |
+| Hit@5 | 90.0% |
+| MRR@5 | 0.806 |
+| nDCG@5 | 0.830 |
+| Query latency | 2.256 s p50 / 2.339 s p95 |
+| Automated tests | 128 passing / 79% coverage |
+
+The dataset, locked paper manifest, per-query outputs, and methodology are committed
+in [`evaluation/`](evaluation/); see the
+[30-query report](evaluation/reports/retrieval_30q.md). These are retrieval metrics,
+not clinical or answer-accuracy claims.
 
 ## Why this architecture
 
