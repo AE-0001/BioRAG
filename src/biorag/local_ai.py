@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import urllib.error
 import urllib.request
 
@@ -50,8 +51,11 @@ class OllamaGenerator:
         )
         prompt = (
             "You are a biomedical research assistant, not a clinician. Use only the "
-            "numbered evidence. Cite every factual claim with [n]. If the evidence is "
-            "insufficient, say exactly that. Do not infer diagnosis, treatment, or causation.\n\n"
+            "numbered evidence. Return only the final answer, with no analysis or preamble. "
+            "Write short declarative sentences and place at least one citation immediately "
+            "before each sentence's final punctuation, for example: Claim [1]. If the "
+            "evidence is insufficient, say exactly that. Do not infer diagnosis, treatment, "
+            "or causation.\n\n"
             f"Question: {question}\n\nEvidence:\n{evidence}"
         )
         result = self.client.post(
@@ -59,13 +63,25 @@ class OllamaGenerator:
             {
                 "model": self.model,
                 "stream": False,
-                "messages": [{"role": "user", "content": prompt}],
-                "options": {"temperature": 0},
+                "think": False,
+                # The bundled Qwen3 Ollama template starts a thinking block
+                # whenever the final message is a user turn. An assistant
+                # prefill makes it emit the cited answer first instead.
+                "messages": [
+                    {"role": "user", "content": prompt},
+                    {"role": "assistant", "content": "Final answer:"},
+                ],
+                "options": {"temperature": 0, "num_predict": 320},
             },
         )
-        return result.get("message", {}).get("content", "").strip() or (
-            "The local model returned no answer."
-        )
+        content = result.get("message", {}).get("content", "")
+        content = content.split("<think>", 1)[0]
+        # Older Qwen3/Ollama combinations can append a second-paragraph
+        # self-critique even with thinking disabled. The instructed answer is
+        # emitted first, so exclude that non-answer tail before verification.
+        content = content.split("\n\n", 1)[0]
+        content = re.sub(r"\s*\\?nements\s*$", "", content).strip()
+        return content or "The local model returned no answer."
 
     def inspect_figure(self, image_path, caption: str, question: str) -> str:
         # Qwen3 4B is text-only. The graph retains captions and routes actual
