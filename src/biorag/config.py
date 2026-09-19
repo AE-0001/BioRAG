@@ -25,6 +25,7 @@ class Settings:
     gemini_generation_model: str = os.getenv(
         "BIORAG_GEMINI_GENERATION_MODEL", "gemini-3.6-flash"
     )
+    openrouter_model: str = os.getenv("BIORAG_OPENROUTER_MODEL", "openrouter/auto")
     ollama_base_url: str = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
     ollama_embedding_model: str = os.getenv("BIORAG_OLLAMA_EMBEDDING_MODEL", "nomic-embed-text")
     request_timeout: float = float(os.getenv("BIORAG_REQUEST_TIMEOUT", "60"))

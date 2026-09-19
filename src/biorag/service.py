@@ -18,6 +18,7 @@ from .local_ai import OllamaEmbeddings, OllamaGenerator
 from .local_embeddings import LocalHashEmbeddings
 from .markitdown_ingestion import MarkItDownIngestor
 from .models import AgentTrace, Answer
+from .openrouter import OpenRouterGenerator
 from .observability import (
     INDEX_CHUNKS,
     INGEST_SECONDS,
@@ -112,6 +113,11 @@ class BioRAGService:
                 base_url=getattr(self.settings, "ollama_base_url", "http://localhost:11434"),
                 timeout=getattr(self.settings, "request_timeout", 60),
             )
+        if provider == "openrouter":
+            return OpenRouterGenerator(
+                model=self.settings.openrouter_model,
+                timeout=self.settings.request_timeout,
+            )
         if provider in {"none", "extractive"}:
             return None
         raise ValueError(f"Unsupported generation provider: {provider}")
@@ -134,6 +140,11 @@ class BioRAGService:
                 model=getattr(
                     self.settings, "gemini_generation_model", "gemini-3.6-flash"
                 )
+            )
+        if provider == "openrouter":
+            return OpenRouterGenerator(
+                model=getattr(self.settings, "openrouter_model", "openrouter/auto"),
+                timeout=self.settings.request_timeout,
             )
         raise ValueError(f"Unsupported generation provider: {provider}")
 
@@ -259,7 +270,7 @@ class BioRAGService:
                             *state.get("trace", []),
                         ]
                     except Exception as exc:
-                        if generation_provider != "gemini" or self.graph is None:
+                        if generation_provider not in {"gemini", "openrouter"} or self.graph is None:
                             raise
                         state = self.graph.invoke(question, top_k, history=history)
                         code = getattr(exc, "code", "")
@@ -269,7 +280,7 @@ class BioRAGService:
                         state["trace"] = [
                             {
                                 "agent": "provider_router",
-                                "action": "gemini unavailable; fell back to ollama",
+                                "action": f"{generation_provider} unavailable; fell back to ollama",
                                 "detail": detail[:400],
                             },
                             *state.get("trace", []),

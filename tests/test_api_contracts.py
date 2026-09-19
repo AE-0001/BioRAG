@@ -17,7 +17,7 @@ def test_health_contract(tmp_path, monkeypatch):
     payload = response.json()
     assert payload["status"] == "ok"
     assert payload["embedding_provider"] in {"ollama", "gemini"}
-    assert payload["generation_provider"] in {"ollama", "gemini"}
+    assert payload["generation_provider"] in {"ollama", "gemini", "openrouter"}
     assert payload["indexed_chunks"] == 0
 
 

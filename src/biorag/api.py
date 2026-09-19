@@ -36,7 +36,7 @@ class QuestionRequest(BaseModel):
     question: str = Field(min_length=3)
     top_k: int = Field(default=5, ge=1, le=20)
     history: list[ConversationTurn] = Field(default_factory=list, max_length=10)
-    generation_provider: Literal["ollama", "gemini"] | None = None
+    generation_provider: Literal["ollama", "gemini", "openrouter"] | None = None
 
 
 @app.get("/health")

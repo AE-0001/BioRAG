@@ -13,10 +13,14 @@ api_url = st.sidebar.text_input(
 )
 generation_label = st.sidebar.selectbox(
     "Answer model",
-    ["Local Ollama (private)", "Gemini API (cloud)"],
+    ["Local Ollama (private)", "Gemini API (cloud)", "OpenRouter (cloud)"],
     help="Retrieval remains FAISS + BM25. This selects only the answer/vision model.",
 )
-generation_provider = "ollama" if generation_label.startswith("Local") else "gemini"
+generation_provider = {
+    "Local Ollama (private)": "ollama",
+    "Gemini API (cloud)": "gemini",
+    "OpenRouter (cloud)": "openrouter",
+}[generation_label]
 if st.sidebar.button("Clear conversation"):
     st.session_state.pop("conversation", None)
     st.session_state.pop("last_result", None)
@@ -87,8 +91,9 @@ if result := st.session_state.get("last_result"):
         None,
     )
     if fallback:
+        failed_provider = fallback.get("action", "Cloud provider").split(" unavailable", 1)[0]
         st.warning(
-            "Gemini was unavailable, so this answer was generated with local Ollama. "
+            f"{failed_provider.title()} was unavailable, so this answer was generated with local Ollama. "
             f"Reason: {fallback.get('detail', 'provider error')}."
         )
     st.subheader("Answer")

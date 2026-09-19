@@ -15,7 +15,7 @@ failure behavior. BioRAG supports either Gemini embeddings or fully local
 Ollama neural embeddings in FAISS, fused with BM25 using reciprocal-rank
 fusion. Docling is the primary layout-aware parser, MarkItDown is the fast
 document fallback, and PyMuPDF is the final portable PDF degradation path.
-Generation is independently selectable: local Qwen through Ollama or Gemini.
+Generation is independently selectable: local Qwen through Ollama, Gemini, or OpenRouter.
 
 ```mermaid
 flowchart LR
@@ -64,7 +64,7 @@ or human review.
 - BM25 + semantic reciprocal-rank fusion
 - Conditional LangGraph with evidence grading, query correction, visual routing,
   citation retry, and abstention
-- Ollama/Qwen local generation or Gemini evidence-constrained generation
+- Ollama/Qwen local generation, Gemini, or OpenRouter evidence-constrained generation
 - Prometheus counters, gauges, and latency histograms
 - FastAPI upload, ingestion, search, Q&A, health, and metrics APIs
 - Streamlit research interface
@@ -73,7 +73,7 @@ or human review.
 ## Quick start
 
 Prerequisites: Python 3.11. For the fully local path, install Ollama; a Gemini
-API key is required only when a Gemini provider is selected.
+API key is required only when Gemini or OpenRouter is selected.
 
 ```bash
 python -m venv .venv
@@ -123,6 +123,8 @@ tests, not evidence of the scale claimed by a production corpus run.
 
 To use Gemini, select the Gemini embedding and/or generation provider and configure
 `GEMINI_API_KEY`. There is no product-facing deterministic offline mode.
+To use OpenRouter generation, configure `OPENROUTER_API_KEY`; optionally set
+`BIORAG_OPENROUTER_MODEL` (the default is `openrouter/auto`).
 
 ### Open-access corpus benchmark
 
