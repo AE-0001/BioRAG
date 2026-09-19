@@ -24,7 +24,7 @@ def test_ollama_qwen_generator_sends_grounded_non_streaming_chat():
         return_value=FakeResponse({"message": {"content": "Supported result. [1]"}}),
     ) as request:
         answer = OllamaGenerator().answer("What changed?", ["The value increased."])
-    assert answer == "Supported result. [1]"
+    assert answer == "Supported result [1]."
     payload = json.loads(request.call_args.args[0].data)
     assert payload["model"] == "qwen3:4b"
     assert payload["stream"] is False
@@ -44,6 +44,17 @@ def test_ollama_qwen_generator_removes_trailing_thinking_content():
     with patch("urllib.request.urlopen", return_value=FakeResponse(payload)):
         answer = OllamaGenerator().answer("What changed?", ["The value increased."])
     assert answer == "Supported result [1]."
+
+
+def test_ollama_qwen_generator_repairs_missing_sentence_citations():
+    payload = {
+        "message": {
+            "content": "First supported claim. Second supported claim [2]."
+        }
+    }
+    with patch("urllib.request.urlopen", return_value=FakeResponse(payload)):
+        answer = OllamaGenerator().answer("What changed?", ["Supporting evidence."])
+    assert answer == "First supported claim [1]. Second supported claim [2]."
 
 
 def test_ollama_embeddings_use_a_dedicated_embedding_model():
