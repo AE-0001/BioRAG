@@ -43,7 +43,7 @@ class OpenRouterGenerator:
                     "model": self.model,
                     "messages": [{"role": "user", "content": prompt}],
                     "temperature": 0,
-                    "max_tokens": 450,
+                    "max_tokens": 800,
                 }
             ).encode("utf-8"),
             headers={
@@ -63,7 +63,37 @@ class OpenRouterGenerator:
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
             raise OpenRouterError(f"OpenRouter request failed: {exc}") from exc
 
+        if error := payload.get("error"):
+            if isinstance(error, dict):
+                error = error.get("message") or error.get("code") or "provider error"
+            raise OpenRouterError(f"OpenRouter provider error: {error}")
+
         try:
-            return payload["choices"][0]["message"]["content"].strip()
-        except (KeyError, IndexError, TypeError, AttributeError) as exc:
-            raise OpenRouterError("OpenRouter returned an invalid response") from exc
+            choice = payload["choices"][0]
+            message = choice["message"]
+            content = message.get("content")
+        except (KeyError, IndexError, TypeError) as exc:
+            raise OpenRouterError(
+                f"OpenRouter response had no answer choices; model={payload.get('model', self.model)}"
+            ) from exc
+
+        if isinstance(content, str) and content.strip():
+            return content.strip()
+        if isinstance(content, list):
+            parts = []
+            for block in content:
+                if isinstance(block, str):
+                    parts.append(block)
+                elif isinstance(block, dict):
+                    text = block.get("text") or block.get("content")
+                    if isinstance(text, str):
+                        parts.append(text)
+            if answer := "\n".join(parts).strip():
+                return answer
+
+        finish_reason = choice.get("finish_reason", "unknown")
+        routed_model = payload.get("model", self.model)
+        raise OpenRouterError(
+            "OpenRouter returned no answer text "
+            f"(model={routed_model}, finish_reason={finish_reason})"
+        )
