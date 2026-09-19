@@ -4,6 +4,7 @@ import os
 import shutil
 import uuid
 from pathlib import Path
+from typing import Literal
 
 from fastapi import FastAPI, File, HTTPException, Response, UploadFile
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
@@ -26,9 +27,16 @@ class IngestRequest(BaseModel):
     paths: list[str] = Field(min_length=1)
 
 
+class ConversationTurn(BaseModel):
+    question: str
+    answer: str
+
+
 class QuestionRequest(BaseModel):
     question: str = Field(min_length=3)
     top_k: int = Field(default=5, ge=1, le=20)
+    history: list[ConversationTurn] = Field(default_factory=list, max_length=10)
+    generation_provider: Literal["ollama", "gemini"] | None = None
 
 
 @app.get("/health")
@@ -82,7 +90,15 @@ def ingest(request: IngestRequest) -> dict[str, int]:
 
 @app.post("/ask")
 def ask(request: QuestionRequest) -> dict:
-    result = service.ask(request.question, request.top_k)
+    try:
+        result = service.ask(
+            request.question,
+            request.top_k,
+            history=[turn.model_dump() for turn in request.history],
+            generation_provider=request.generation_provider,
+        )
+    except (RuntimeError, ValueError) as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
     if isinstance(result, dict):
         return {
             **result,

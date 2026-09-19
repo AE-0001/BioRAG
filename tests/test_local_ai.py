@@ -46,7 +46,7 @@ def test_ollama_qwen_generator_removes_trailing_thinking_content():
     assert answer == "Supported result [1]."
 
 
-def test_ollama_qwen_generator_repairs_missing_sentence_citations():
+def test_ollama_qwen_generator_preserves_uncited_text_for_graph_review():
     payload = {
         "message": {
             "content": "First supported claim. Second supported claim [2]."
@@ -54,7 +54,7 @@ def test_ollama_qwen_generator_repairs_missing_sentence_citations():
     }
     with patch("urllib.request.urlopen", return_value=FakeResponse(payload)):
         answer = OllamaGenerator().answer("What changed?", ["Supporting evidence."])
-    assert answer == "First supported claim [1]. Second supported claim [2]."
+    assert answer == "First supported claim. Second supported claim [2]."
 
 
 def test_ollama_embeddings_use_a_dedicated_embedding_model():

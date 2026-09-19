@@ -14,6 +14,7 @@ from .observability import RETRIEVAL_ATTEMPTS, RETRIEVAL_SECONDS, observe
 class ResearchState(TypedDict, total=False):
     question: str
     retrieval_query: str
+    conversation_context: str
     top_k: int
     hits: list[SearchHit]
     answer: str
@@ -124,7 +125,10 @@ class FourAgentResearchGraph:
 
     def _query_rewriter(self, state: ResearchState) -> ResearchState:
         return {
-            "retrieval_query": f"{state['question']} biomedical study evidence findings limitations",
+            "retrieval_query": (
+                f"{state.get('retrieval_query', state['question'])} "
+                "biomedical study evidence findings limitations"
+            ),
             "trace": [
                 *state.get("trace", []),
                 {"agent": "query_rewriter", "action": "expanded biomedical retrieval query"},
@@ -169,8 +173,14 @@ class FourAgentResearchGraph:
 
     def _research_summary_agent(self, state: ResearchState) -> ResearchState:
         if self.generator:
+            generation_question = state["question"]
+            if state.get("conversation_context"):
+                generation_question = (
+                    f"Conversation context: {state['conversation_context']}\n"
+                    f"Current question: {state['question']}"
+                )
             answer = self.generator.answer(
-                state["question"], [hit.document.text for hit in state["hits"]]
+                generation_question, [hit.document.text for hit in state["hits"]]
             )
         else:
             answer = " ".join(
@@ -251,11 +261,29 @@ class FourAgentResearchGraph:
             ],
         }
 
-    def invoke(self, question: str, top_k: int = 5) -> ResearchState:
+    def invoke(
+        self,
+        question: str,
+        top_k: int = 5,
+        history: list[dict[str, str]] | None = None,
+    ) -> ResearchState:
+        recent = (history or [])[-3:]
+        conversation_context = "\n".join(
+            f"Previous question: {turn.get('question', '')}\n"
+            f"Previous answer: {turn.get('answer', '')}"
+            for turn in recent
+        )
+        follow_up = bool(re.search(r"\b(it|that|this|they|those|these|its|their)\b", question, re.I))
+        retrieval_query = question
+        if recent and follow_up:
+            retrieval_query = (
+                f"{question} Previous topic: {recent[-1].get('question', '')}"
+            )
         result = self.compiled.invoke(
             {
                 "question": question,
-                "retrieval_query": question,
+                "retrieval_query": retrieval_query,
+                "conversation_context": conversation_context,
                 "top_k": top_k,
                 "trace": [],
                 "warnings": [],

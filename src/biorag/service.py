@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
+import os
 
 from .agents import BioRAGGraph
 from .chunking import chunk_documents
@@ -114,6 +115,25 @@ class BioRAGService:
             return None
         raise ValueError(f"Unsupported generation provider: {provider}")
 
+    def _generator_for_provider(self, provider: str | None):
+        if provider is None:
+            return self.generator
+        provider = provider.lower()
+        configured_provider = getattr(self.settings, "generation_provider", "none").lower()
+        if provider == configured_provider:
+            return self.generator
+        if provider == "ollama":
+            return OllamaGenerator(
+                model=os.getenv("BIORAG_OLLAMA_GENERATION_MODEL", "qwen3:4b"),
+                base_url=self.settings.ollama_base_url,
+                timeout=self.settings.request_timeout,
+            )
+        if provider == "gemini":
+            return GeminiGenerator(
+                model=os.getenv("BIORAG_GEMINI_GENERATION_MODEL", "gemini-2.5-flash")
+            )
+        raise ValueError(f"Unsupported generation provider: {provider}")
+
     def _ingest_with_parser_chain(self, path: Path):
         failures: list[str] = []
         parser_chain = getattr(
@@ -203,12 +223,27 @@ class BioRAGService:
             "indexed_total": len(self.index.documents),
         }
 
-    def ask(self, question: str, top_k: int = 5):
+    def ask(
+        self,
+        question: str,
+        top_k: int = 5,
+        history: list[dict[str, str]] | None = None,
+        generation_provider: str | None = None,
+    ):
         if self.production:
             outcome = "error"
             try:
+                generator = self._generator_for_provider(generation_provider)
+                graph = self.graph
+                if generator is not self.generator:
+                    graph = FourAgentResearchGraph(
+                        self.retriever,
+                        generator,
+                        minimum_relevance=self.settings.minimum_relevance,
+                        max_retrieval_attempts=self.settings.max_retrieval_attempts,
+                    )
                 with observe(QUERY_SECONDS):
-                    state = self.graph.invoke(question, top_k)
+                    state = graph.invoke(question, top_k, history=history)
                 outcome = "grounded" if state.get("grounded") else "abstained"
                 return graph_state_to_answer(question, state)
             finally:

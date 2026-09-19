@@ -89,25 +89,7 @@ class OllamaGenerator:
             return "The local model returned no answer."
         content = re.sub(r"([.!?])\s*(\[\d+\])", r" \2\1", content)
 
-        # Local models occasionally omit a marker on one otherwise grounded
-        # sentence. Since generation is restricted to the supplied ranked
-        # evidence, attach the top evidence marker to only those uncited
-        # sentences before the graph performs its structural citation check.
-        sentences = re.findall(r"[^.!?\n]+(?:[.!?]+|$)", content)
-        cited_sentences = []
-        for sentence in sentences:
-            sentence = sentence.strip()
-            if not sentence:
-                continue
-            if re.search(r"\[\d+\]", sentence):
-                cited_sentences.append(sentence)
-                continue
-            if sentence[-1:] in ".!?":
-                sentence = f"{sentence[:-1].rstrip()} [1]{sentence[-1]}"
-            else:
-                sentence = f"{sentence} [1]."
-            cited_sentences.append(sentence)
-        return " ".join(cited_sentences[:4])
+        return content
 
     def inspect_figure(self, image_path, caption: str, question: str) -> str:
         # Qwen3 4B is text-only. The graph retains captions and routes actual

@@ -11,6 +11,17 @@ st.warning("Research prototype. Do not use for diagnosis or clinical decisions."
 api_url = st.sidebar.text_input(
     "API URL", os.getenv("BIORAG_API_URL", "http://localhost:8000")
 )
+generation_label = st.sidebar.selectbox(
+    "Answer model",
+    ["Local Ollama (private)", "Gemini API (cloud)"],
+    help="Retrieval remains FAISS + BM25. This selects only the answer/vision model.",
+)
+generation_provider = "ollama" if generation_label.startswith("Local") else "gemini"
+if st.sidebar.button("Clear conversation"):
+    st.session_state.pop("conversation", None)
+    st.session_state.pop("last_result", None)
+    st.session_state.pop("search_error", None)
+st.session_state.setdefault("conversation", [])
 st.sidebar.subheader("Corpus")
 uploads = st.sidebar.file_uploader(
     "Add papers or supplementary files",
@@ -46,11 +57,19 @@ if st.button("Search", type="primary", disabled=not question.strip()):
         with st.spinner("Retrieving evidence and generating a grounded answer..."):
             response = requests.post(
                 f"{api_url}/ask",
-                json={"question": question, "top_k": top_k},
+                json={
+                    "question": question,
+                    "top_k": top_k,
+                    "history": st.session_state["conversation"][-6:],
+                    "generation_provider": generation_provider,
+                },
                 timeout=180,
             )
         response.raise_for_status()
         st.session_state["last_result"] = response.json()
+        st.session_state["conversation"].append(
+            {"question": question, "answer": response.json()["answer"]}
+        )
         st.session_state.pop("search_error", None)
     except requests.RequestException as exc:
         st.session_state["search_error"] = f"Could not reach the API: {exc}"
@@ -71,3 +90,9 @@ if result := st.session_state.get("last_result"):
             st.caption(f"Modality: {evidence['modality']}")
     with st.expander("Agent trace"):
         st.json(result["trace"])
+
+if len(st.session_state["conversation"]) > 1:
+    with st.expander("Conversation history"):
+        for turn in st.session_state["conversation"][:-1]:
+            st.markdown(f"**You:** {turn['question']}")
+            st.markdown(f"**BioRAG:** {turn['answer']}")

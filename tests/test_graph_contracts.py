@@ -35,8 +35,10 @@ class FakeGenerator:
     def __init__(self, answer="Supported finding. [1]"):
         self.generated_answer = answer
         self.inspected = []
+        self.questions = []
 
     def answer(self, question, contexts):
+        self.questions.append(question)
         return self.generated_answer
 
     def inspect_figure(self, image_path: Path, caption: str, question: str):
@@ -48,6 +50,18 @@ def test_retrieval_receives_question_and_top_k():
     retriever = StaticRetriever([hit()])
     FourAgentResearchGraph(retriever).invoke("What is supported?", top_k=1)
     assert retriever.calls == [("What is supported?", 1)]
+
+
+def test_follow_up_uses_recent_conversation_for_retrieval_and_generation():
+    retriever = StaticRetriever([hit()])
+    generator = FakeGenerator()
+    history = [{"question": "What mechanisms are reported?", "answer": "Efflux pumps."}]
+    FourAgentResearchGraph(retriever, generator).invoke(
+        "How do they work?", top_k=1, history=history
+    )
+    assert "Previous topic: What mechanisms are reported?" in retriever.calls[0][0]
+    assert "Conversation context:" in generator.questions[0]
+    assert "Previous answer: Efflux pumps." in generator.questions[0]
 
 
 def test_no_evidence_sets_warning_and_not_grounded():
