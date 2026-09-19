@@ -43,22 +43,31 @@ top_k = st.slider("Evidence passages", 1, 10, 5)
 
 if st.button("Search", type="primary", disabled=not question.strip()):
     try:
-        response = requests.post(
-            f"{api_url}/ask", json={"question": question, "top_k": top_k}, timeout=180
-        )
+        with st.spinner("Retrieving evidence and generating a grounded answer..."):
+            response = requests.post(
+                f"{api_url}/ask",
+                json={"question": question, "top_k": top_k},
+                timeout=180,
+            )
         response.raise_for_status()
-        result = response.json()
-        st.subheader("Answer")
-        st.write(result["answer"])
-        st.caption(f"Grounding check: {'passed' if result['grounded'] else 'needs review'}")
-        st.subheader("Sources")
-        for number, (citation, evidence) in enumerate(
-            zip(result["citations"], result["evidence"]), start=1
-        ):
-            with st.expander(f"[{number}] {citation} · score {evidence['score']}"):
-                st.write(evidence["text"])
-                st.caption(f"Modality: {evidence['modality']}")
-        with st.expander("Agent trace"):
-            st.json(result["trace"])
+        st.session_state["last_result"] = response.json()
+        st.session_state.pop("search_error", None)
     except requests.RequestException as exc:
-        st.error(f"Could not reach the API: {exc}")
+        st.session_state["search_error"] = f"Could not reach the API: {exc}"
+
+if error := st.session_state.get("search_error"):
+    st.error(error)
+
+if result := st.session_state.get("last_result"):
+    st.subheader("Answer")
+    st.write(result["answer"])
+    st.caption(f"Grounding check: {'passed' if result['grounded'] else 'needs review'}")
+    st.subheader("Sources")
+    for number, (citation, evidence) in enumerate(
+        zip(result["citations"], result["evidence"]), start=1
+    ):
+        with st.expander(f"[{number}] {citation} · score {evidence['score']}"):
+            st.write(evidence["text"])
+            st.caption(f"Modality: {evidence['modality']}")
+    with st.expander("Agent trace"):
+        st.json(result["trace"])
