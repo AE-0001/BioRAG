@@ -24,3 +24,7 @@
 {"id":"r024","question":"What happens to inner tumor cells after reactive T cells kill the outer cells of cell-in-cell structures?","gold_pmcids":["PMC9489212"],"type":"mechanism"}
 {"id":"r025","question":"What advances have been made in CAR T-cell immunotherapy for paediatric brain tumours?","gold_pmcids":["PMC9727400"],"type":"clinical"}
 {"id":"r026","question":"Which biological barriers and target-selection problems affect CAR T treatment of childhood brain tumors?","gold_pmcids":["PMC9727400"],"type":"clinical"}
+{"id":"r027","question":"Why can targeting tumor-associated antigens with CAR T cells damage healthy epithelial tissues?","gold_pmcids":["PMC10296619"],"type":"safety"}
+{"id":"r028","question":"How do antigen-negative tumor cells enable escape from single-target and dual-target CAR T-cell therapy?","gold_pmcids":["PMC10327392"],"type":"mechanism"}
+{"id":"r029","question":"What do hot, cold, and immune-excluded tumors reveal about the spatial organization of immune infiltration?","gold_pmcids":["PMC6133554"],"type":"spatial"}
+{"id":"r030","question":"How can cell-in-cell structures protect an inner cancer cell from reactive T-cell killing?","gold_pmcids":["PMC9489212"],"type":"mechanism"}

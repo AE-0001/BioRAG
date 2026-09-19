@@ -1,0 +1,1053 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-19T15:26:16.243636+00:00",
+  "environment": {
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26200-SP0"
+  },
+  "corpus": {
+    "pdfs": 13,
+    "pages": 245,
+    "chunks": 329,
+    "sha256": "d464d7a7aa51f7290af3f51d4c42df52fe2a705a8b43f112c9f0ca4663e873e0"
+  },
+  "queries": 30,
+  "top_k": 5,
+  "extraction_seconds": 1.2671648999676108,
+  "runs": [
+    {
+      "provider": "ollama",
+      "indexing_seconds": 323.2652139000129,
+      "aggregate": {
+        "questions": 30,
+        "hit_at_k": 0.9,
+        "mrr_at_k": 0.8055555555555556,
+        "ndcg_at_k": 0.8297596420238125,
+        "query_p50_seconds": 2.25625679991208,
+        "query_p95_seconds": 2.3391261000651866
+      },
+      "cases": [
+        {
+          "id": "r001",
+          "hit_at_k": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "ndcg": 0.5,
+          "latency_seconds": 2.1620575000997633,
+          "retrieved": [
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 4,
+              "score": 0.815312
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 3,
+              "score": 0.806363
+            },
+            {
+              "source": "PMC10296619.1.pdf",
+              "page": 9,
+              "score": 0.803908
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 6,
+              "score": 0.802595
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 9,
+              "score": 0.80242
+            }
+          ]
+        },
+        {
+          "id": "r002",
+          "hit_at_k": false,
+          "reciprocal_rank": 0.0,
+          "ndcg": 0.0,
+          "latency_seconds": 2.1872400001157075,
+          "retrieved": [
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 14,
+              "score": 0.804817
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 15,
+              "score": 0.782476
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 2,
+              "score": 0.777421
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 3,
+              "score": 0.775326
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 7,
+              "score": 0.767879
+            }
+          ]
+        },
+        {
+          "id": "r003",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.2652852998580784,
+          "retrieved": [
+            {
+              "source": "PMC10327392.1.pdf",
+              "page": 11,
+              "score": 0.797101
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 3,
+              "score": 0.783079
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 3,
+              "score": 0.781289
+            },
+            {
+              "source": "PMC10327392.1.pdf",
+              "page": 36,
+              "score": 0.781172
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 9,
+              "score": 0.780518
+            }
+          ]
+        },
+        {
+          "id": "r004",
+          "hit_at_k": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "ndcg": 0.5,
+          "latency_seconds": 2.330563399940729,
+          "retrieved": [
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 14,
+              "score": 0.770942
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 5,
+              "score": 0.764592
+            },
+            {
+              "source": "PMC10327392.1.pdf",
+              "page": 22,
+              "score": 0.754834
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 15,
+              "score": 0.752495
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 3,
+              "score": 0.747024
+            }
+          ]
+        },
+        {
+          "id": "r005",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.18001880007796,
+          "retrieved": [
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 8,
+              "score": 0.827755
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 6,
+              "score": 0.813449
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 15,
+              "score": 0.811057
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 2,
+              "score": 0.810012
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 3,
+              "score": 0.809928
+            }
+          ]
+        },
+        {
+          "id": "r006",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.2437346999067813,
+          "retrieved": [
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 21,
+              "score": 0.850927
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 19,
+              "score": 0.850431
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 3,
+              "score": 0.849612
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 6,
+              "score": 0.835009
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 6,
+              "score": 0.828638
+            }
+          ]
+        },
+        {
+          "id": "r007",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.2148055001161993,
+          "retrieved": [
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 8,
+              "score": 0.928272
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 17,
+              "score": 0.924645
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 15,
+              "score": 0.910357
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 6,
+              "score": 0.909232
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 3,
+              "score": 0.908518
+            }
+          ]
+        },
+        {
+          "id": "r008",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.25625679991208,
+          "retrieved": [
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 8,
+              "score": 0.912458
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 12,
+              "score": 0.870366
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 4,
+              "score": 0.866311
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 15,
+              "score": 0.862809
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 1,
+              "score": 0.858757
+            }
+          ]
+        },
+        {
+          "id": "r009",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.330187799874693,
+          "retrieved": [
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 5,
+              "score": 0.87315
+            },
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 6,
+              "score": 0.85391
+            },
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 2,
+              "score": 0.853252
+            },
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 14,
+              "score": 0.843257
+            },
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 20,
+              "score": 0.835715
+            }
+          ]
+        },
+        {
+          "id": "r010",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.180924199987203,
+          "retrieved": [
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 13,
+              "score": 0.784006
+            },
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 12,
+              "score": 0.765558
+            },
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 2,
+              "score": 0.7533
+            },
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 11,
+              "score": 0.751511
+            },
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 6,
+              "score": 0.751376
+            }
+          ]
+        },
+        {
+          "id": "r011",
+          "hit_at_k": true,
+          "reciprocal_rank": 0.5,
+          "ndcg": 0.6309297535714575,
+          "latency_seconds": 2.2375155999325216,
+          "retrieved": [
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 5,
+              "score": 0.899477
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 6,
+              "score": 0.897729
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 19,
+              "score": 0.883735
+            },
+            {
+              "source": "PMC6217729.1.pdf",
+              "page": 7,
+              "score": 0.882161
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 21,
+              "score": 0.880497
+            }
+          ]
+        },
+        {
+          "id": "r012",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.1960364000406116,
+          "retrieved": [
+            {
+              "source": "PMC6217729.1.pdf",
+              "page": 6,
+              "score": 0.876884
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 5,
+              "score": 0.871499
+            },
+            {
+              "source": "PMC6217729.1.pdf",
+              "page": 6,
+              "score": 0.869253
+            },
+            {
+              "source": "PMC6217729.1.pdf",
+              "page": 7,
+              "score": 0.867315
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 2,
+              "score": 0.867097
+            }
+          ]
+        },
+        {
+          "id": "r013",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.274704499868676,
+          "retrieved": [
+            {
+              "source": "PMC8632651.1.pdf",
+              "page": 1,
+              "score": 0.884345
+            },
+            {
+              "source": "PMC8632651.1.pdf",
+              "page": 12,
+              "score": 0.873843
+            },
+            {
+              "source": "PMC8632651.1.pdf",
+              "page": 11,
+              "score": 0.863428
+            },
+            {
+              "source": "PMC8632651.1.pdf",
+              "page": 8,
+              "score": 0.862623
+            },
+            {
+              "source": "PMC8632651.1.pdf",
+              "page": 11,
+              "score": 0.85086
+            }
+          ]
+        },
+        {
+          "id": "r014",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.3364512999542058,
+          "retrieved": [
+            {
+              "source": "PMC8632651.1.pdf",
+              "page": 4,
+              "score": 0.80826
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 11,
+              "score": 0.80264
+            },
+            {
+              "source": "PMC8632651.1.pdf",
+              "page": 1,
+              "score": 0.802137
+            },
+            {
+              "source": "PMC8632651.1.pdf",
+              "page": 11,
+              "score": 0.801415
+            },
+            {
+              "source": "PMC8632651.1.pdf",
+              "page": 11,
+              "score": 0.797476
+            }
+          ]
+        },
+        {
+          "id": "r015",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.199373799841851,
+          "retrieved": [
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 3,
+              "score": 0.779343
+            },
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 10,
+              "score": 0.770158
+            },
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 6,
+              "score": 0.767604
+            },
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 2,
+              "score": 0.75104
+            },
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 4,
+              "score": 0.749128
+            }
+          ]
+        },
+        {
+          "id": "r016",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.278905800078064,
+          "retrieved": [
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 4,
+              "score": 0.771943
+            },
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 3,
+              "score": 0.751128
+            },
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 8,
+              "score": 0.747871
+            },
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 14,
+              "score": 0.738998
+            },
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 7,
+              "score": 0.735758
+            }
+          ]
+        },
+        {
+          "id": "r017",
+          "hit_at_k": true,
+          "reciprocal_rank": 0.5,
+          "ndcg": 0.6309297535714575,
+          "latency_seconds": 2.335666700033471,
+          "retrieved": [
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 13,
+              "score": 0.786271
+            },
+            {
+              "source": "PMC8139127.1.pdf",
+              "page": 1,
+              "score": 0.780422
+            },
+            {
+              "source": "PMC8139127.1.pdf",
+              "page": 3,
+              "score": 0.76458
+            },
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 5,
+              "score": 0.762692
+            },
+            {
+              "source": "PMC8438243.1.pdf",
+              "page": 3,
+              "score": 0.75774
+            }
+          ]
+        },
+        {
+          "id": "r018",
+          "hit_at_k": true,
+          "reciprocal_rank": 0.5,
+          "ndcg": 0.6309297535714575,
+          "latency_seconds": 2.2089462999720126,
+          "retrieved": [
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 2,
+              "score": 0.744368
+            },
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 10,
+              "score": 0.736029
+            },
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 2,
+              "score": 0.73436
+            },
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 8,
+              "score": 0.734332
+            },
+            {
+              "source": "PMC8139127.1.pdf",
+              "page": 4,
+              "score": 0.725591
+            }
+          ]
+        },
+        {
+          "id": "r019",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.2833312000148,
+          "retrieved": [
+            {
+              "source": "PMC10845339.1.pdf",
+              "page": 7,
+              "score": 0.864595
+            },
+            {
+              "source": "PMC10845339.1.pdf",
+              "page": 4,
+              "score": 0.862725
+            },
+            {
+              "source": "PMC10845339.1.pdf",
+              "page": 1,
+              "score": 0.86158
+            },
+            {
+              "source": "PMC10845339.1.pdf",
+              "page": 8,
+              "score": 0.850891
+            },
+            {
+              "source": "PMC10845339.1.pdf",
+              "page": 6,
+              "score": 0.845101
+            }
+          ]
+        },
+        {
+          "id": "r020",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.329149099998176,
+          "retrieved": [
+            {
+              "source": "PMC10845339.1.pdf",
+              "page": 2,
+              "score": 0.854499
+            },
+            {
+              "source": "PMC10845339.1.pdf",
+              "page": 1,
+              "score": 0.846842
+            },
+            {
+              "source": "PMC10845339.1.pdf",
+              "page": 11,
+              "score": 0.844672
+            },
+            {
+              "source": "PMC10845339.1.pdf",
+              "page": 9,
+              "score": 0.840286
+            },
+            {
+              "source": "PMC10845339.1.pdf",
+              "page": 4,
+              "score": 0.836838
+            }
+          ]
+        },
+        {
+          "id": "r021",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.2125126000028104,
+          "retrieved": [
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 9,
+              "score": 0.876886
+            },
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 3,
+              "score": 0.863715
+            },
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 2,
+              "score": 0.85193
+            },
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 2,
+              "score": 0.843826
+            },
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 4,
+              "score": 0.838922
+            }
+          ]
+        },
+        {
+          "id": "r022",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.2760941002052277,
+          "retrieved": [
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 3,
+              "score": 0.816416
+            },
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 2,
+              "score": 0.800913
+            },
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 12,
+              "score": 0.794751
+            },
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 9,
+              "score": 0.789636
+            },
+            {
+              "source": "PMC7425302.1.pdf",
+              "page": 2,
+              "score": 0.786853
+            }
+          ]
+        },
+        {
+          "id": "r023",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.32347370008938,
+          "retrieved": [
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 3,
+              "score": 0.805266
+            },
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 1,
+              "score": 0.804352
+            },
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 16,
+              "score": 0.787781
+            },
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 6,
+              "score": 0.775082
+            },
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 7,
+              "score": 0.77022
+            }
+          ]
+        },
+        {
+          "id": "r024",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.2125502000562847,
+          "retrieved": [
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 12,
+              "score": 0.738288
+            },
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 8,
+              "score": 0.727553
+            },
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 7,
+              "score": 0.722025
+            },
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 17,
+              "score": 0.720062
+            },
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 13,
+              "score": 0.713147
+            }
+          ]
+        },
+        {
+          "id": "r025",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.2620886000804603,
+          "retrieved": [
+            {
+              "source": "PMC9727400.1.pdf",
+              "page": 1,
+              "score": 0.900984
+            },
+            {
+              "source": "PMC9727400.1.pdf",
+              "page": 2,
+              "score": 0.87937
+            },
+            {
+              "source": "PMC9727400.1.pdf",
+              "page": 11,
+              "score": 0.868649
+            },
+            {
+              "source": "PMC9727400.1.pdf",
+              "page": 9,
+              "score": 0.867391
+            },
+            {
+              "source": "PMC9727400.1.pdf",
+              "page": 7,
+              "score": 0.86096
+            }
+          ]
+        },
+        {
+          "id": "r026",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.3391261000651866,
+          "retrieved": [
+            {
+              "source": "PMC9727400.1.pdf",
+              "page": 2,
+              "score": 0.780313
+            },
+            {
+              "source": "PMC9727400.1.pdf",
+              "page": 7,
+              "score": 0.778849
+            },
+            {
+              "source": "PMC9727400.1.pdf",
+              "page": 1,
+              "score": 0.77684
+            },
+            {
+              "source": "PMC9727400.1.pdf",
+              "page": 8,
+              "score": 0.770467
+            },
+            {
+              "source": "PMC9727400.1.pdf",
+              "page": 5,
+              "score": 0.768917
+            }
+          ]
+        },
+        {
+          "id": "r027",
+          "hit_at_k": false,
+          "reciprocal_rank": 0.0,
+          "ndcg": 0.0,
+          "latency_seconds": 2.2329543998930603,
+          "retrieved": [
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 15,
+              "score": 0.822482
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 4,
+              "score": 0.813341
+            },
+            {
+              "source": "PMC6217729.1.pdf",
+              "page": 2,
+              "score": 0.806977
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 5,
+              "score": 0.804041
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 9,
+              "score": 0.803094
+            }
+          ]
+        },
+        {
+          "id": "r028",
+          "hit_at_k": false,
+          "reciprocal_rank": 0.0,
+          "ndcg": 0.0,
+          "latency_seconds": 2.369344500126317,
+          "retrieved": [
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 14,
+              "score": 0.823417
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 3,
+              "score": 0.822471
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 5,
+              "score": 0.822069
+            },
+            {
+              "source": "PMC11083689.1.pdf",
+              "page": 4,
+              "score": 0.820619
+            },
+            {
+              "source": "PMC10067596.1.pdf",
+              "page": 15,
+              "score": 0.819941
+            }
+          ]
+        },
+        {
+          "id": "r029",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.1857596000190824,
+          "retrieved": [
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 3,
+              "score": 0.815478
+            },
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 6,
+              "score": 0.80719
+            },
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 10,
+              "score": 0.805032
+            },
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 2,
+              "score": 0.797361
+            },
+            {
+              "source": "PMC6133554.1.pdf",
+              "page": 4,
+              "score": 0.793208
+            }
+          ]
+        },
+        {
+          "id": "r030",
+          "hit_at_k": true,
+          "reciprocal_rank": 1.0,
+          "ndcg": 1.0,
+          "latency_seconds": 2.301678800024092,
+          "retrieved": [
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 12,
+              "score": 0.772893
+            },
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 13,
+              "score": 0.75244
+            },
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 17,
+              "score": 0.75223
+            },
+            {
+              "source": "PMC9489212.1.pdf",
+              "page": 8,
+              "score": 0.743983
+            },
+            {
+              "source": "PMC6217729.1.pdf",
+              "page": 2,
+              "score": 0.73516
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

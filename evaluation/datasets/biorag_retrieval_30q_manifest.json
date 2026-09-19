@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "papers": [
+    {"pmcid": "PMC10296619", "version": 1},
+    {"pmcid": "PMC10327392", "version": 1},
+    {"pmcid": "PMC11083689", "version": 1},
+    {"pmcid": "PMC10067596", "version": 1},
+    {"pmcid": "PMC8438243", "version": 1},
+    {"pmcid": "PMC6217729", "version": 1},
+    {"pmcid": "PMC8632651", "version": 1},
+    {"pmcid": "PMC6133554", "version": 1},
+    {"pmcid": "PMC8139127", "version": 1},
+    {"pmcid": "PMC10845339", "version": 1},
+    {"pmcid": "PMC7425302", "version": 1},
+    {"pmcid": "PMC9489212", "version": 1},
+    {"pmcid": "PMC9727400", "version": 1}
+  ]
+}
