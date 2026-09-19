@@ -27,7 +27,7 @@ if st.sidebar.button("Ingest files", disabled=not uploads):
         st.sidebar.error(f"Ingestion failed: {exc}")
 
 try:
-    metrics = requests.get(f"{api_url}/metrics", timeout=3)
+    metrics = requests.get(f"{api_url}/stats", timeout=15)
     if metrics.ok:
         values = metrics.json()
         columns = st.columns(4)
@@ -44,7 +44,7 @@ top_k = st.slider("Evidence passages", 1, 10, 5)
 if st.button("Search", type="primary", disabled=not question.strip()):
     try:
         response = requests.post(
-            f"{api_url}/ask", json={"question": question, "top_k": top_k}, timeout=30
+            f"{api_url}/ask", json={"question": question, "top_k": top_k}, timeout=180
         )
         response.raise_for_status()
         result = response.json()
