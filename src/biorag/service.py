@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 import os
+import re
 
 from .agents import BioRAGGraph
 from .chunking import chunk_documents
@@ -104,7 +105,7 @@ class BioRAGService:
             "none" if self.settings.embedding_model == "local-hash" else "gemini",
         ).lower()
         if provider == "gemini":
-            return GeminiGenerator(model=self.settings.generation_model)
+            return GeminiGenerator(model=self.settings.gemini_generation_model)
         if provider == "ollama":
             return OllamaGenerator(
                 model=self.settings.generation_model,
@@ -130,7 +131,9 @@ class BioRAGService:
             )
         if provider == "gemini":
             return GeminiGenerator(
-                model=os.getenv("BIORAG_GEMINI_GENERATION_MODEL", "gemini-2.5-flash")
+                model=getattr(
+                    self.settings, "gemini_generation_model", "gemini-3.6-flash"
+                )
             )
         raise ValueError(f"Unsupported generation provider: {provider}")
 
@@ -259,11 +262,15 @@ class BioRAGService:
                         if generation_provider != "gemini" or self.graph is None:
                             raise
                         state = self.graph.invoke(question, top_k, history=history)
+                        code = getattr(exc, "code", "")
+                        message = getattr(exc, "message", str(exc))
+                        detail = f"{type(exc).__name__} {code}: {message}".strip()
+                        detail = re.sub(r"(?i)(api[_ -]?key)[=: ]+\S+", r"\1=[hidden]", detail)
                         state["trace"] = [
                             {
                                 "agent": "provider_router",
                                 "action": "gemini unavailable; fell back to ollama",
-                                "detail": type(exc).__name__,
+                                "detail": detail[:400],
                             },
                             *state.get("trace", []),
                         ]

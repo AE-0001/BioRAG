@@ -57,6 +57,21 @@ def test_ollama_qwen_generator_preserves_uncited_text_for_graph_review():
     assert answer == "First supported claim. Second supported claim [2]."
 
 
+def test_ollama_qwen_generator_removes_source_bibliography_markers():
+    payload = {"message": {"content": "Glycopeptides inhibit synthesis [1]."}}
+    contexts = [
+        "They bind peptidoglycan precursors [49] and block synthesis [72-74]."
+    ]
+    with patch("urllib.request.urlopen", return_value=FakeResponse(payload)) as request:
+        answer = OllamaGenerator().answer("How do glycopeptides work?", contexts)
+
+    prompt = json.loads(request.call_args.args[0].data)["messages"][0]["content"]
+    assert answer == "Glycopeptides inhibit synthesis [1]."
+    assert "[1] They bind peptidoglycan precursors" in prompt
+    assert "[49]" not in prompt
+    assert "[72-74]" not in prompt
+
+
 def test_ollama_embeddings_use_a_dedicated_embedding_model():
     with patch(
         "urllib.request.urlopen",

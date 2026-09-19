@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 import mimetypes
 import os
+import re
 from collections.abc import Iterable
 from pathlib import Path
 
@@ -123,11 +124,16 @@ class GeminiGenerator:
         if not api_key:
             raise RuntimeError("Set GEMINI_API_KEY before using Gemini generation")
         self.client = genai.Client(api_key=api_key)
-        self.model = model or os.getenv("BIORAG_GENERATION_MODEL", "gemini-3.5-flash")
+        self.model = model or os.getenv(
+            "BIORAG_GEMINI_GENERATION_MODEL", "gemini-3.6-flash"
+        )
 
     def answer(self, question: str, contexts: list[str]) -> str:
         evidence = "\n\n".join(
-            f"[{number}] {context}" for number, context in enumerate(contexts, start=1)
+            "[{}] {}".format(
+                number, re.sub(r"\[(?:\d+[\s,–-]*)+\]", "", context)
+            )
+            for number, context in enumerate(contexts, start=1)
         )
         prompt = f"""You are a biomedical research assistant, not a clinician.
 Use only the numbered evidence below. Cite every factual claim with [n].

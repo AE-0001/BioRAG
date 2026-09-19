@@ -47,7 +47,10 @@ class OllamaGenerator:
 
     def answer(self, question: str, contexts: list[str]) -> str:
         evidence = "\n\n".join(
-            f"[{number}] {context}" for number, context in enumerate(contexts, start=1)
+            "[{}] {}".format(
+                number, re.sub(r"\[(?:\d+[\s,–-]*)+\]", "", context)
+            )
+            for number, context in enumerate(contexts, start=1)
         )
         prompt = (
             "You are a biomedical research assistant, not a clinician. Use only the "
