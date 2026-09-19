@@ -52,7 +52,11 @@ class OllamaGenerator:
         prompt = (
             "You are a biomedical research assistant, not a clinician. Use only the "
             "numbered evidence. Return only the final answer, with no analysis or preamble. "
-            "Write short declarative sentences and place at least one citation immediately "
+            "Write three to four concise sentences that directly answer the question, group "
+            "related findings, and briefly explain how the reported mechanisms work. Do not "
+            "merely copy a list, discuss evidence limitations unless asked, or use phrases "
+            "such as 'the evidence provided'. "
+            "Place at least one citation immediately "
             "before each sentence's final punctuation, for example: Claim [1]. If the "
             "evidence is insufficient, say exactly that. Do not infer diagnosis, treatment, "
             "or causation.\n\n"
@@ -71,7 +75,7 @@ class OllamaGenerator:
                     {"role": "user", "content": prompt},
                     {"role": "assistant", "content": "Final answer:"},
                 ],
-                "options": {"temperature": 0, "num_predict": 320},
+                "options": {"temperature": 0, "num_predict": 240},
             },
         )
         content = result.get("message", {}).get("content", "")
@@ -103,7 +107,7 @@ class OllamaGenerator:
             else:
                 sentence = f"{sentence} [1]."
             cited_sentences.append(sentence)
-        return " ".join(cited_sentences)
+        return " ".join(cited_sentences[:4])
 
     def inspect_figure(self, image_path, caption: str, question: str) -> str:
         # Qwen3 4B is text-only. The graph retains captions and routes actual

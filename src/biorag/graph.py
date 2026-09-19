@@ -226,6 +226,10 @@ class FourAgentResearchGraph:
     def _route_after_citation(self, state: ResearchState) -> Literal["retry", "done", "abstain"]:
         if state.get("grounded"):
             return "done"
+        # Relevant evidence exists and the answer is still useful, so preserve
+        # it with grounded=False rather than replacing it with an abstention.
+        if state.get("evidence_sufficient") and state.get("answer"):
+            return "done"
         return "retry" if self.generator and state.get("citation_attempts", 0) < 2 else "abstain"
 
     def _abstain(self, state: ResearchState) -> ResearchState:

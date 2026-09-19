@@ -57,17 +57,20 @@ def test_no_evidence_sets_warning_and_not_grounded():
     assert "citation_verification_failed" in result["warnings"]
 
 
-def test_invalid_citation_number_fails_verification():
+def test_invalid_citation_number_preserves_answer_for_review():
     generator = FakeGenerator("Unsupported index. [2]")
     result = FourAgentResearchGraph(StaticRetriever([hit()]), generator).invoke("Question")
     assert result["grounded"] is False
+    assert result["answer"] == "Unsupported index. [2]"
     assert "citation_verification_failed" in result["warnings"]
 
 
-def test_missing_citation_fails_verification():
+def test_missing_citation_preserves_answer_for_review():
     generator = FakeGenerator("A claim without evidence marker.")
     result = FourAgentResearchGraph(StaticRetriever([hit()]), generator).invoke("Question")
     assert result["grounded"] is False
+    assert result["answer"] == "A claim without evidence marker."
+    assert "citation_verification_failed" in result["warnings"]
 
 
 def test_valid_multiple_citations_pass_verification():
