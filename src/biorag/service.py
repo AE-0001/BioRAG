@@ -156,9 +156,14 @@ class BioRAGService:
         raise RuntimeError(f"Every parser failed for {path.name}: {', '.join(failures)}")
 
     def ingest(self, paths: list[Path]) -> dict[str, int]:
+        # Avoid running heavyweight PDF/OCR parsers for a file that is already
+        # represented in the persistent index. Chunk-level de-duplication below
+        # remains the second line of defence for newly parsed documents.
+        indexed_sources = {Path(document.source).name for document in self.index.documents}
+        pending_paths = [path for path in paths if path.name not in indexed_sources]
         raw = []
         with observe(INGEST_SECONDS):
-            for path in paths:
+            for path in pending_paths:
                 if path.suffix.lower() in {".pdf", ".docx", ".pptx"}:
                     raw.extend(self._ingest_with_parser_chain(path))
                 else:
@@ -170,8 +175,13 @@ class BioRAGService:
         self.index.save(self.index_path)
         if self.semantic is not None:
             semantic_ids = {document.id for document in self.semantic.documents}
+            semantic_candidates = {
+                document.id: document for document in [*self.index.documents, *chunks]
+            }
             new_semantic_chunks = [
-                document for document in chunks if document.id not in semantic_ids
+                document
+                for document in semantic_candidates.values()
+                if document.id not in semantic_ids
             ]
             self.semantic.add(new_semantic_chunks)
             self.semantic.save(self.index_path.parent / "faiss")
