@@ -78,6 +78,19 @@ if error := st.session_state.get("search_error"):
     st.error(error)
 
 if result := st.session_state.get("last_result"):
+    fallback = next(
+        (
+            step
+            for step in result.get("trace", [])
+            if step.get("agent") == "provider_router" and "fell back" in step.get("action", "")
+        ),
+        None,
+    )
+    if fallback:
+        st.warning(
+            "Gemini was unavailable, so this answer was generated with local Ollama. "
+            f"Reason: {fallback.get('detail', 'provider error')}."
+        )
     st.subheader("Answer")
     st.write(result["answer"])
     st.caption(f"Grounding check: {'passed' if result['grounded'] else 'needs review'}")

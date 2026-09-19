@@ -1,6 +1,8 @@
 from pathlib import Path
+from types import SimpleNamespace
 
 from biorag.models import Document, SearchHit
+import biorag.service as service_module
 from biorag.service import BioRAGService, graph_state_to_answer
 
 
@@ -45,3 +47,38 @@ def test_graph_state_is_normalized_to_interface_answer_contract():
     assert answer.question == "Question?"
     assert answer.evidence == [hit]
     assert answer.trace[0].agent == "retrieval"
+
+
+def test_gemini_failure_falls_back_to_local_graph(monkeypatch):
+    class LocalGraph:
+        def invoke(self, question, top_k, history=None):
+            return {
+                "answer": "Local answer [1].",
+                "citations": [],
+                "hits": [],
+                "grounded": True,
+                "trace": [],
+            }
+
+    class FailingCloudGraph:
+        def invoke(self, question, top_k, history=None):
+            raise ConnectionError("cloud unavailable")
+
+    service = BioRAGService.__new__(BioRAGService)
+    service.production = True
+    service.settings = SimpleNamespace(
+        generation_provider="ollama", minimum_relevance=0.2, max_retrieval_attempts=2
+    )
+    service.generator = object()
+    service.retriever = object()
+    service.graph = LocalGraph()
+    monkeypatch.setattr(service, "_generator_for_provider", lambda provider: object())
+    monkeypatch.setattr(
+        service_module, "FourAgentResearchGraph", lambda *args, **kwargs: FailingCloudGraph()
+    )
+
+    answer = service.ask("Question?", generation_provider="gemini")
+
+    assert answer.answer == "Local answer [1]."
+    assert answer.trace[0].agent == "provider_router"
+    assert "fell back to ollama" in answer.trace[0].action

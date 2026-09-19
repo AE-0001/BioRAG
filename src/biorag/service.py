@@ -243,7 +243,30 @@ class BioRAGService:
                         max_retrieval_attempts=self.settings.max_retrieval_attempts,
                     )
                 with observe(QUERY_SECONDS):
-                    state = graph.invoke(question, top_k, history=history)
+                    try:
+                        state = graph.invoke(question, top_k, history=history)
+                        selected = generation_provider or getattr(
+                            self.settings, "generation_provider", "extractive"
+                        )
+                        state["trace"] = [
+                            {
+                                "agent": "provider_router",
+                                "action": f"generation_provider={selected}",
+                            },
+                            *state.get("trace", []),
+                        ]
+                    except Exception as exc:
+                        if generation_provider != "gemini" or self.graph is None:
+                            raise
+                        state = self.graph.invoke(question, top_k, history=history)
+                        state["trace"] = [
+                            {
+                                "agent": "provider_router",
+                                "action": "gemini unavailable; fell back to ollama",
+                                "detail": type(exc).__name__,
+                            },
+                            *state.get("trace", []),
+                        ]
                 outcome = "grounded" if state.get("grounded") else "abstained"
                 return graph_state_to_answer(question, state)
             finally:
