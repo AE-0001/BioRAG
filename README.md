@@ -15,16 +15,16 @@ LangGraph execution trace.
 | Benchmark | Result |
 |---|---:|
 | Labelled known-item queries | 30 |
-| Evaluation corpus | 13 PDFs / 245 pages / 329 chunks |
-| Hit@5 | 90.0% |
-| MRR@5 | 0.806 |
-| nDCG@5 | 0.830 |
-| Query latency | 2.256 s p50 / 2.339 s p95 |
+| Evaluation corpus | 50 PDFs / 1,046 pages / 1,318 chunks |
+| Hit@5 | 73.3% |
+| MRR@5 | 0.661 |
+| nDCG@5 | 0.680 |
+| Query latency | 2.224 s p50 / 2.333 s p95 |
 | Automated tests | 128 passing / 79% coverage |
 
 The dataset, locked paper manifest, per-query outputs, and methodology are committed
 in [`evaluation/`](evaluation/); see the
-[30-query report](evaluation/reports/retrieval_30q.md). These are retrieval metrics,
+[30-query report](evaluation/reports/retrieval_30q_50papers.md). These are retrieval metrics,
 not clinical or answer-accuracy claims.
 
 ## Why this architecture
