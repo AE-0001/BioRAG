@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any
 import os
 import re
+from pathlib import Path
+from typing import Any
 
 from .agents import BioRAGGraph
 from .chunking import chunk_documents
@@ -18,7 +18,6 @@ from .local_ai import OllamaEmbeddings, OllamaGenerator
 from .local_embeddings import LocalHashEmbeddings
 from .markitdown_ingestion import MarkItDownIngestor
 from .models import AgentTrace, Answer
-from .openrouter import OpenRouterGenerator
 from .observability import (
     INDEX_CHUNKS,
     INGEST_SECONDS,
@@ -27,6 +26,7 @@ from .observability import (
     QUERY_TOTAL,
     observe,
 )
+from .openrouter import OpenRouterGenerator
 from .retrieval import HybridIndex
 
 

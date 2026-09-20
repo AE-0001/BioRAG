@@ -57,6 +57,7 @@ def test_openrouter_surfaces_provider_error(monkeypatch):
     response.read = lambda: json.dumps(
         {"error": {"code": 429, "message": "rate limited"}}
     ).encode()
-    with patch("urllib.request.urlopen", return_value=response):
-        with pytest.raises(OpenRouterError, match="rate limited"):
-            OpenRouterGenerator().answer("Question?", ["Evidence."])
+    with patch("urllib.request.urlopen", return_value=response), pytest.raises(
+        OpenRouterError, match="rate limited"
+    ):
+        OpenRouterGenerator().answer("Question?", ["Evidence."])

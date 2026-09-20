@@ -1,8 +1,8 @@
 from pathlib import Path
 from types import SimpleNamespace
 
-from biorag.models import Document, SearchHit
 import biorag.service as service_module
+from biorag.models import Document, SearchHit
 from biorag.service import BioRAGService, graph_state_to_answer
 
 

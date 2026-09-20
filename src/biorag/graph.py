@@ -273,7 +273,7 @@ class FourAgentResearchGraph:
             f"Previous answer: {turn.get('answer', '')}"
             for turn in recent
         )
-        follow_up = bool(re.search(r"\b(it|that|this|they|those|these|its|their)\b", question, re.I))
+        follow_up = bool(re.search(r"\b(it|that|this|they|those|these|its|their)\b", question, re.IGNORECASE))
         retrieval_query = question
         if recent and follow_up:
             retrieval_query = (
